@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.desktop
 
 import cn.afeibaili.gl.Window
+import cn.afeibaili.jump.common.util.createLogger
 
 
 /**
@@ -12,17 +13,19 @@ import cn.afeibaili.gl.Window
 
 class Application {
     companion object {
+        val logger = createLogger { "Application" }
+
         @JvmStatic
         fun main(args: Array<String>) {
-            val window: Window = Window.builder().buildWidth(800).build()
-
-            window.toString()
-
-            window.frameRender {
-                println(111)
-            }
+            val window: Window = Window.builder()
+                .buildTitle("跳一跳")
+                .buildWidth(800)
+                .buildHeight(800)
+                .build()
+            logger.info("window is initialized")
 
             window.close()
+            logger.info("windows is destroy")
         }
     }
 }

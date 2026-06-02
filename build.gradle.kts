@@ -10,7 +10,7 @@ allprojects {
         mavenCentral()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/afeibaili/wrapgl")
+            url = uri("https://maven.pkg.github.com/afeibaili/engine2d")
             credentials {
                 username = System.getenv("GITHUB_ACCOUNT")
                 password = System.getenv("GITHUB_TOKEN")
