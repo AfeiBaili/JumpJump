@@ -3,5 +3,5 @@ plugins {
 }
 
 rootProject.name = "JumpJump"
-include("common")
-include("desktop")
+include(":common")
+include(":desktop")

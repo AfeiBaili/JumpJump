@@ -8,7 +8,14 @@ version = "1.0-SNAPSHOT"
 allprojects {
     repositories {
         mavenCentral()
-        mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/afeibaili/wrapgl")
+            credentials {
+                username = System.getenv("GITHUB_ACCOUNT")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 

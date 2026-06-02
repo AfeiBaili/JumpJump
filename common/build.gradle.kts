@@ -4,12 +4,10 @@ plugins {
 
 group = "cn.afeibaili"
 version = "common-${properties["version"] as String}"
-val wrapVersion = "0.0.1"
 
 dependencies {
     testImplementation(kotlin("test"))
-
-    api("cn.afeibaili.gl:wrap-gl:$wrapVersion")
+    api("cn.afeibaili.gl:wrapgl:${properties["wrap.version"]}")
 }
 
 tasks.test {
