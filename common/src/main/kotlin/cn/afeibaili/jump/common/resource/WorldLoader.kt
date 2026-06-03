@@ -19,7 +19,7 @@ import java.io.FileNotFoundException
  */
 
 object WorldLoader : Loader<List<World>> {
-    val worldPath = "${System.getProperty("user.dir")}/world"
+    val worldPath = "${System.getProperty("user.dir")}/resource/world"
     private val logger = createLogger { "WorldLoader" }
     private val parser = WorldParser()
 
