@@ -1,0 +1,11 @@
+# 测试地图文件
+{name} = test world
+D = dirt
+G = grass_dirt
+GGG     GGGG
+DD      DDDD
+     GGGDDDD
+     DDDDDDD
+GG     DDDDD
+DD     DDDDD
+DDGGGGGDDDDD
