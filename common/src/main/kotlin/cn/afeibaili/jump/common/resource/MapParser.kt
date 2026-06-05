@@ -1,12 +1,12 @@
 package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.Identifier
-import cn.afeibaili.jump.common.block.Block
-import cn.afeibaili.jump.common.block.Blocks
+import cn.afeibaili.jump.common.tile.Tile
+import cn.afeibaili.jump.common.tile.Tiles
 import cn.afeibaili.jump.common.exception.IdentifierIsNullException
 import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.common.world.World
+import cn.afeibaili.jump.common.map.Map
 
 /**
  * # 地图解析器，解析字符串为地图信息
@@ -36,8 +36,8 @@ import cn.afeibaili.jump.common.world.World
  * @version 2026/6/3 12:48
  */
 
-class WorldParser {
-    private val logger = createLogger { "WorldParser" }
+class MapParser {
+    private val logger = createLogger { "MapParser" }
 
     /**
      * 解析地图内容，并转换为对象
@@ -46,12 +46,12 @@ class WorldParser {
      *
      * @return 地图对象
      *
-     * @see World
+     * @see Map
      */
-    fun parse(text: String): World {
-        var worldName = "unnamed"
+    fun parse(text: String): Map {
+        var mapName = "unnamed"
         val charBlockMap = HashMap<Char, Identifier>()
-        val blocks = ArrayList<ArrayList<Block>>()
+        val tiles = ArrayList<ArrayList<Tile>>()
         var rowLine = 0
 
         /**
@@ -69,12 +69,12 @@ class WorldParser {
                 if (v == null) throw KeyException("keyword is null: $key")
 
                 when (v.trim()) {
-                    "name" -> worldName = value
+                    "name" -> mapName = value
                 }
             } else {
                 val key = key
                 if (key.length != 1) throw KeyException("key not's char: $key")
-                charBlockMap[key[0]] = Identifier("block", value)
+                charBlockMap[key[0]] = Identifier("tile", value)
             }
         }
 
@@ -92,21 +92,21 @@ class WorldParser {
             }
 
 
-            val blockRow = ArrayList<Block>()
+            val tileRow = ArrayList<Tile>()
             line.forEachIndexed { indexX, char ->
                 val identifier: Identifier? = charBlockMap[char]
                 if (char == ' ') {
-                    blockRow.add(Block(indexX, rowLine, Blocks.AIR))
+                    tileRow.add(Tile(indexX, rowLine, Tiles.AIR))
                     return@forEachIndexed
                 }
                 if (identifier == null) throw IdentifierIsNullException("标识符为空，未知的char: $char")
-                blockRow.add(Block(indexX, rowLine, Blocks.getBlockTypeById(identifier)))
+                tileRow.add(Tile(indexX, rowLine, Tiles.getBlockTypeById(identifier)))
             }
-            blocks.add(blockRow)
+            tiles.add(tileRow)
             rowLine++
         }
 
-        logger.info("[$worldName] world is load")
-        return World(worldName, blocks).also { logger.debug(it) }
+        logger.info("[$mapName] map is load")
+        return Map(mapName, tiles).also { logger.debug(it) }
     }
 }

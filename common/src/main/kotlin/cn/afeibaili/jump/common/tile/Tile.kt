@@ -1,0 +1,11 @@
+package cn.afeibaili.jump.common.tile
+
+
+/**
+ * # 方块实例
+ *
+ *@author AfeiBaili
+ *@version 2026/6/2 22:36
+ */
+
+data class Tile(val x: Int, val y: Int, val type: TileType)

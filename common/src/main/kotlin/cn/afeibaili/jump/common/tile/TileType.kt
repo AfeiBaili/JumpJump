@@ -1,4 +1,4 @@
-package cn.afeibaili.jump.common.block
+package cn.afeibaili.jump.common.tile
 
 import cn.afeibaili.jump.common.Identifier
 
@@ -10,4 +10,4 @@ import cn.afeibaili.jump.common.Identifier
  *@version 2026/6/2 22:33
  */
 
-data class BlockType(val identifier: Identifier)
+data class TileType(val identifier: Identifier)

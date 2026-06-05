@@ -2,8 +2,9 @@ package cn.afeibaili.jump.desktop
 
 import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
+import cn.afeibaili.jump.common.map.MapManager
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.common.world.WorldManager
+import cn.afeibaili.jump.desktop.world.World
 
 
 /**
@@ -17,28 +18,35 @@ class Application {
     companion object {
         val logger = createLogger { "Application" }
 
-        @JvmStatic
-        fun main(args: Array<String>) {
-            init()
+        val window: Window = Window.builder()
+            .buildTitle("没有名字")
+            .buildWidth(800)
+            .buildHeight(800)
+            .build()
 
-            val window: Window = Window.builder()
-                .buildTitle("没有名字")
-                .buildWidth(800)
-                .buildHeight(800)
-                .build()
-            logger.info("window is initialized")
-
-            window.frameRender { print("") }
-
-            window.close()
-            logger.info("windows is destroy")
-        }
+        lateinit var world: World
 
         fun init() {
             Logger.printDebug = false
             Logger.writeFile = true
             logger.info("initializing worlds")
-            WorldManager.load()
+            MapManager.load()
+            world = World.of(MapManager.maps[0])
+        }
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            init()
+            logger.info("window is initialized")
+
+            window.frameRender { print("") }
+
+            stop()
+            logger.info("windows is destroy")
+        }
+
+        fun stop() {
+            window.close()
         }
     }
 }

@@ -10,4 +10,8 @@ package cn.afeibaili.jump.common.resource
 
 interface Loader<Type> {
     fun load(): Type
+
+    companion object {
+        val userPath: String = System.getProperty("user.dir")
+    }
 }
