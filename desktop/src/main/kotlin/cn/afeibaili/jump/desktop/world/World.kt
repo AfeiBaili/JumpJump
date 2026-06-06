@@ -12,10 +12,15 @@ import cn.afeibaili.jump.common.resource.ResourceFileGetter
  * @version 2026/6/5 22:43
  */
 
-class World(val map: Map, val blocks: List<List<Block>>) {
+class World private constructor(
+    val map: Map,
+    val blocks: List<List<Block>>,
+    val size: Int,
+    val atlas: TextureAtlas,
+) {
     companion object {
         val blocksTexture =
-            TextureAtlas.create("block", ResourceFileGetter.get("tile"))
+            TextureAtlas.create("block", ResourceFileGetter.getResourceFileList("tile"))
 
         fun of(map: Map): World {
             val blocks = ArrayList<ArrayList<Block>>()
@@ -29,7 +34,10 @@ class World(val map: Map, val blocks: List<List<Block>>) {
                 }
                 blocks.add(blockLine)
             }
-            return World(map, blocks)
+
+            val size: Int = map.tiles.sumOf { tileLine -> tileLine.size }
+
+            return World(map, blocks, size, blocksTexture)
         }
     }
 }

@@ -2,9 +2,8 @@ package cn.afeibaili.jump.desktop
 
 import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
-import cn.afeibaili.jump.common.map.MapManager
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.desktop.world.World
+import cn.afeibaili.jump.desktop.render.RendererSystem
 
 
 /**
@@ -16,7 +15,8 @@ import cn.afeibaili.jump.desktop.world.World
 
 class Application {
     companion object {
-        val logger = createLogger { "Application" }
+        private val logger = createLogger { "Application" }
+        val rendererSystem = RendererSystem()
 
         val window: Window = Window.builder()
             .buildTitle("没有名字")
@@ -24,29 +24,29 @@ class Application {
             .buildHeight(800)
             .build()
 
-        lateinit var world: World
 
         fun init() {
+            logger.info("setting logger")
             Logger.printDebug = false
             Logger.writeFile = true
-            logger.info("initializing worlds")
-            MapManager.load()
-            world = World.of(MapManager.maps[0])
+            logger.info("initialize renderer system")
+            rendererSystem.init()
+
+            logger.info("window is initialized")
         }
 
         @JvmStatic
         fun main(args: Array<String>) {
             init()
-            logger.info("window is initialized")
-
-            window.frameRender { print("") }
-
+            window.frameRender {
+                rendererSystem.render()
+            }
             stop()
-            logger.info("windows is destroy")
         }
 
         fun stop() {
             window.close()
+            logger.info("windows is destroy")
         }
     }
 }

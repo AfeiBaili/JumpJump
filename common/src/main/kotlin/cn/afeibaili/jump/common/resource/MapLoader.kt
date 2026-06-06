@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.common.resource
 
-import cn.afeibaili.jump.common.exception.WorldIsEmptyException
+import cn.afeibaili.jump.common.exception.WorldException
 import cn.afeibaili.jump.common.util.createLogger
 import cn.afeibaili.jump.common.map.Map
 import java.io.File
@@ -39,8 +39,8 @@ object MapLoader : Loader<List<Map>> {
     fun getWorldFile(): List<File> {
         val worldPath = File(worldPath)
         if (!worldPath.exists()) throw FileNotFoundException("找不到地图文件夹")
-        val worldFileList: List<File> = worldPath.listFiles().filter { it.name.endsWith(".map") }
-        if (worldFileList.isEmpty()) throw WorldIsEmptyException("找不到地图文件")
+        val worldFileList: List<File> = worldPath.listFiles().filter { it.name.endsWith(".world") }
+        if (worldFileList.isEmpty()) throw WorldException("找不到地图文件")
         return worldFileList
     }
 }

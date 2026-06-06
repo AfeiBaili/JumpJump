@@ -1,12 +1,12 @@
 package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.Identifier
+import cn.afeibaili.jump.common.exception.IdentifierException
+import cn.afeibaili.jump.common.exception.KeyException
+import cn.afeibaili.jump.common.map.Map
 import cn.afeibaili.jump.common.tile.Tile
 import cn.afeibaili.jump.common.tile.Tiles
-import cn.afeibaili.jump.common.exception.IdentifierIsNullException
-import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.common.map.Map
 
 /**
  * # 地图解析器，解析字符串为地图信息
@@ -99,11 +99,11 @@ class MapParser {
                     tileRow.add(Tile(indexX, rowLine, Tiles.AIR))
                     return@forEachIndexed
                 }
-                if (identifier == null) throw IdentifierIsNullException("标识符为空，未知的char: $char")
+                if (identifier == null) throw IdentifierException("标识符为空，未知的char: $char")
                 tileRow.add(Tile(indexX, rowLine, Tiles.getBlockTypeById(identifier)))
             }
             tiles.add(tileRow)
-            rowLine++
+            rowLine--
         }
 
         logger.info("[$mapName] map is load")

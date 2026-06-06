@@ -8,4 +8,4 @@ package cn.afeibaili.jump.common.exception
  * @version 2026/6/3 12:39
  */
 
-class WorldIsEmptyException(msg: String) : Exception(msg)
+class WorldException(msg: String) : Exception(msg)

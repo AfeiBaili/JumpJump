@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.common.tile
 
 import cn.afeibaili.jump.common.Identifier
+import cn.afeibaili.jump.common.util.createLogger
 import kotlin.also
 
 
@@ -13,6 +14,7 @@ import kotlin.also
 
 object Tiles {
     val tileTypeMap = HashMap<Identifier, TileType>()
+    private val logger = createLogger { "Tiles" }
 
     val ERROR = register("error")
     val AIR = register("air")
@@ -21,6 +23,7 @@ object Tiles {
 
     fun register(id: String): TileType {
         val identifier = Identifier("tile", id)
+        logger.info("registering $identifier")
         return TileType(identifier).also { tileTypeMap[identifier] = it }
     }
 

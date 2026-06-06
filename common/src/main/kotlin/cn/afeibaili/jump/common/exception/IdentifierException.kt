@@ -8,4 +8,4 @@ package cn.afeibaili.jump.common.exception
  * @version 2026/6/3 19:41
  */
 
-class IdentifierIsNullException(msg: String) : Exception(msg)
+class IdentifierException(msg: String) : Exception(msg)
