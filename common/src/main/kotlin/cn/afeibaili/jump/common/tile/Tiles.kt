@@ -2,7 +2,6 @@ package cn.afeibaili.jump.common.tile
 
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.util.createLogger
-import kotlin.also
 
 
 /**
@@ -20,6 +19,7 @@ object Tiles {
     val AIR = register("air")
     val DIRT = register("dirt")
     val GRASS_DIRT = register("grass_dirt")
+    val GRASS = register("grass")
 
     fun register(id: String): TileType {
         val identifier = Identifier("tile", id)

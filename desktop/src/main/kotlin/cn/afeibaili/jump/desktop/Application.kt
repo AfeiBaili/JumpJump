@@ -4,6 +4,7 @@ import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
 import cn.afeibaili.jump.common.util.createLogger
 import cn.afeibaili.jump.desktop.render.RendererSystem
+import cn.afeibaili.jump.desktop.window.WindowSystem
 
 
 /**
@@ -19,16 +20,15 @@ class Application {
         val rendererSystem = RendererSystem()
 
         val window: Window = Window.builder()
-            .buildTitle("没有名字")
-            .buildWidth(800)
-            .buildHeight(800)
-            .build()
-
+            .buildTitle("没有名字").buildWidth(800).buildHeight(800).build()
+        val windowSystem = WindowSystem(window)
 
         fun init() {
             logger.info("setting logger")
             Logger.printDebug = false
             Logger.writeFile = true
+            logger.info("initialize window system")
+            windowSystem.init()
             logger.info("initialize renderer system")
             rendererSystem.init()
 

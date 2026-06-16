@@ -2,10 +2,12 @@
 {name} = test world
 D = dirt
 G = grass_dirt
+g = grass
+ggg     gggg
 GGG     GGGG
-DD      DDDD
+DD    g DDDD
      GGGDDDD
-     DDDDDDD
+gg   DDDDDDD
 GG     DDDDD
-DD     DDDDD
+DDggg  DDDDD
 DDGGGGGDDDDD
