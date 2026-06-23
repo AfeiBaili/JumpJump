@@ -17,11 +17,11 @@ import cn.afeibaili.jump.desktop.window.WindowSystem
 class Application {
     companion object {
         private val logger = createLogger { "Application" }
-        val rendererSystem = RendererSystem()
+        val rendererSystem = RendererSystem() //渲染系统
 
-        val window: Window = Window.builder()
+        val window: Window = Window.builder() //窗口构建器
             .buildTitle("没有名字").buildWidth(800).buildHeight(800).build()
-        val windowSystem = WindowSystem(window)
+        val windowSystem = WindowSystem(window) //窗口管理器
 
         fun init() {
             logger.info("setting logger")

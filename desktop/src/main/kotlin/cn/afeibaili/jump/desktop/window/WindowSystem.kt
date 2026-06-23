@@ -4,7 +4,6 @@ import cn.afeibaili.gl.Window
 import cn.afeibaili.jump.desktop.Application
 import org.lwjgl.glfw.GLFW
 
-
 /**
  * # 窗口系统管理
  *

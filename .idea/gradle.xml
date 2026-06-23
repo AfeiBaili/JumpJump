@@ -8,6 +8,7 @@
         <option name="gradleHome" value="B:\Program Files\Gradle\gradle-8.13" />
         <option name="modules">
           <set>
+            <option value="$PROJECT_DIR$/../Engine2D" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/desktop" />
