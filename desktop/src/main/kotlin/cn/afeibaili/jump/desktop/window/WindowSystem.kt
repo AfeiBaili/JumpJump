@@ -20,5 +20,9 @@ class WindowSystem(val window: Window) {
             Application.rendererSystem.worldRenderer.camera
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
         }
+
+        GLFW.glfwSetWindowCloseCallback(window.windowLocation) {
+            Application.stop()
+        }
     }
 }
