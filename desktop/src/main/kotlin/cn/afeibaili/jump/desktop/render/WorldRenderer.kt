@@ -31,12 +31,12 @@ class WorldRenderer {
     private lateinit var _gridRenderer: GridRenderer
 
     fun init() {
+        logger.info("initialize world")
         MapManager.load()
         logger.info("upload texture to gpu")
         World.blocksTexture.atlas.forEach { it.texture.upload() }
         logger.info("transform map to world")
         _world = World.of(MapManager.maps[0])
-        _camera = Camera("projection", "view")
         logger.info("create program")
         _program = Program.create(
             Shader.create(
@@ -48,12 +48,13 @@ class WorldRenderer {
                 ResourceFileGetter.getResourceFile("shader/world.frag").readText()
             )
         )
+        _camera = Camera(_program, "projection", "view")
         _program.link()
         _gridRenderer = GridRenderer(_program, _camera)
     }
 
     fun render() {
-        _camera.apply(_program)
+        _camera.apply()
         _world.atlas.atlas[0].texture.bind()
         _gridRenderer.renderGrid(
             {

@@ -13,13 +13,14 @@ import cn.afeibaili.jump.common.util.createLogger
 class RendererSystem {
     private val logger = createLogger { "RendererSystem" }
     val worldRenderer = WorldRenderer()
+    val camera get() = worldRenderer.camera
 
     fun init() {
         logger.info("initialize world renderer")
         worldRenderer.init()
     }
 
-    fun render() {
+    fun frame() {
         worldRenderer.render()
     }
 }

@@ -9,3 +9,7 @@ package cn.afeibaili.jump.common
  */
 
 data class Identifier(val type: String, val id: String)
+
+infix fun String.identifier(id: String): Identifier {
+    return Identifier(this, id)
+}

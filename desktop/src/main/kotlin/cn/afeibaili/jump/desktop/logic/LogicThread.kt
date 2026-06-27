@@ -1,0 +1,56 @@
+package cn.afeibaili.jump.desktop.logic
+
+import cn.afeibaili.gl.tool.Time
+import cn.afeibaili.jump.desktop.Application
+
+
+/**
+ * # 逻辑专用线程
+ *
+ * @author AfeiBaili
+ * @version 2026/6/23 23:09
+ */
+
+class LogicThread {
+    companion object {
+        val self get() = Application.logicThread
+    }
+
+    var isActive: Boolean = true
+
+    val tick = 60f
+    val step = 1f / tick
+    private var lastTime = Time.nano()
+    private var accumulationSecondes = 0f
+
+    val thread = Thread({
+        while (isActive) {
+            val currentNano: Long = Time.nano()
+            val deltaSecondes: Float = (currentNano - lastTime) / 1_000_000_000f
+            lastTime = currentNano
+            accumulationSecondes += deltaSecondes
+            while (accumulationSecondes >= step) {
+                accumulationSecondes -= step
+                update()
+            }
+            Thread.sleep(1) // 放缓CPU
+        }
+    }, "LogicThread")
+
+    /**
+     * 刻更新方法，已用**TickHandler**类进行封装
+     *
+     * @see TickHandler
+     */
+    fun update() {
+        TickHandler.all.forEach { it::tick }
+    }
+
+    fun start() {
+        thread.start()
+    }
+
+    fun stop() {
+        isActive = false
+    }
+}

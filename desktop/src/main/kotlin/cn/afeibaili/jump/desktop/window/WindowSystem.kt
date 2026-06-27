@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW
  * @version 2026/6/6 20:43
  */
 
-class WindowSystem(val window: Window) {
+class WindowSystem(val window: Window = Application.window) {
     fun init() {
         GLFW.glfwSetWindowSizeCallback(window.windowLocation) { _, w, h ->
             val h = if (h == 0) 1 else h

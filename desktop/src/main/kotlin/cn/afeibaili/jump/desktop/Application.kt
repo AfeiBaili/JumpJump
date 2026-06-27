@@ -3,7 +3,8 @@ package cn.afeibaili.jump.desktop
 import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.desktop.process.ProcessThread
+import cn.afeibaili.jump.desktop.entity.Player
+import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.render.RendererSystem
 import cn.afeibaili.jump.desktop.window.WindowSystem
 
@@ -19,13 +20,16 @@ class Application {
     companion object {
         private val logger = createLogger { "Application" } //日志器
 
+        var running = true
         val window: Window = Window.builder() //窗口构建器
             .buildTitle("跳一跳").buildWidth(800).buildHeight(800).build()
         val windowSystem = WindowSystem(window) //窗口管理器
         val rendererSystem = RendererSystem() //渲染系统
-        val processThread = ProcessThread()
+        val logicThread = LogicThread()
+        val camera get() = rendererSystem.worldRenderer.camera
+        val player get() = Player.self
 
-        fun init() {
+        fun setup() {
             logger.info("setting logger")
             Logger.printDebug = false
             Logger.writeFile = true
@@ -33,22 +37,25 @@ class Application {
             windowSystem.init()
             logger.info("initialize renderer system")
             rendererSystem.init()
-            logger.info("window is initialized")
+            logger.info("initialize player")
+            player.init()
+
+            logger.info("application is initialized")
         }
 
         @JvmStatic
         fun main(args: Array<String>) {
-            init()
-            processThread.start()
-            window.frameRender {
-                rendererSystem.render()
+            setup()
+            logicThread.start()
+            window.frame({ running }) {
+                rendererSystem.frame()
             }
-            processThread.thread.join()
-            stop()
+            logicThread.thread.join()
         }
 
         fun stop() {
-            processThread.isActive = false
+            running = false
+            logicThread.stop()
             window.close()
             logger.info("windows is destroy")
         }
