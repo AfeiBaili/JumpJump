@@ -1,4 +1,4 @@
-package cn.afeibaili.jump.common.tile
+package cn.afeibaili.jump.common.block
 
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.util.createLogger

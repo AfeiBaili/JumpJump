@@ -2,7 +2,7 @@ package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.exception.WorldException
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.common.map.World
+import cn.afeibaili.jump.common.world.World
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -12,24 +12,24 @@ import java.io.FileNotFoundException
  * 解析“.world”结尾的文件
  *
  *
- * @see MapLoader
- * @see MapParser
+ * @see WorldLoader
+ * @see WorldParser
  * @author AfeiBaili
  * @version 2026/6/2 22:58
  */
 
-object MapLoader : Loader<List<World>> {
-    private val worldPath = "${System.getProperty("user.dir")}/resource/map"
-    private val logger = createLogger { "MapLoader" }
-    private val parser = MapParser()
+object WorldLoader : Loader<List<World>> {
+    private val worldPath = "${System.getProperty("user.dir")}/resource/world"
+    private val logger = createLogger { "WorldLoader" }
+    private val parser = WorldParser()
 
     override fun load(): List<World> {
-        logger.info("map loading...")
+        logger.info("world loading...")
         val worldFile: List<File> = getWorldFile()
         val worlds = mutableListOf<World>()
         worldFile.forEach { file ->
             val text: String = file.readText()
-            logger.info("loading map file: ${file.name}")
+            logger.info("loading world file: ${file.name}")
             val world = parser.parse(text)
             worlds.add(world)
         }

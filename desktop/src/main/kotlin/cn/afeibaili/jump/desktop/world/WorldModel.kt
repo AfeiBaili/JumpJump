@@ -1,8 +1,8 @@
 package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.image.TextureAtlas
-import cn.afeibaili.jump.common.map.World
-import cn.afeibaili.jump.common.resource.ResourceFileGetter
+import cn.afeibaili.jump.common.world.World
+import cn.afeibaili.jump.desktop.render.TextureManager
 
 
 /**
@@ -19,8 +19,7 @@ class WorldModel private constructor(
     val atlas: TextureAtlas,
 ) {
     companion object {
-        val blocksTexture =
-            TextureAtlas.create("block", ResourceFileGetter.getResourceFileList("tile"))
+        val blocksTexture get() = TextureManager.blockTextureAtlas
 
         fun of(world: World): WorldModel {
             val blockModels = ArrayList<ArrayList<BlockModel>>()

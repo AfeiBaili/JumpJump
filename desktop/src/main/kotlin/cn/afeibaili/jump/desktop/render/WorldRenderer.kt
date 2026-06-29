@@ -4,7 +4,7 @@ import cn.afeibaili.gl.render.GridRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
-import cn.afeibaili.jump.common.map.WorldManager
+import cn.afeibaili.jump.common.world.WorldManager
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.createLogger
 import cn.afeibaili.jump.desktop.world.WorldModel
@@ -35,7 +35,7 @@ class WorldRenderer : Renderable {
         WorldManager.load()
         logger.info("upload texture to gpu")
         WorldModel.blocksTexture.atlas.forEach { it.texture.upload() }
-        logger.info("transform map to world")
+        logger.info("transform to world model")
         _worldModel = WorldModel.of(WorldManager.worlds[0])
         logger.info("create program")
         _program = Program.create(

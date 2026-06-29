@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.world
 
-import cn.afeibaili.jump.common.tile.Block
+import cn.afeibaili.jump.common.block.Block
 
 
 /**

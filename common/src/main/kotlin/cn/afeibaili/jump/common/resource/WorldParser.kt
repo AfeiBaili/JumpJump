@@ -3,9 +3,9 @@ package cn.afeibaili.jump.common.resource
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.exception.IdentifierException
 import cn.afeibaili.jump.common.exception.KeyException
-import cn.afeibaili.jump.common.map.World
-import cn.afeibaili.jump.common.tile.Block
-import cn.afeibaili.jump.common.tile.Blocks
+import cn.afeibaili.jump.common.world.World
+import cn.afeibaili.jump.common.block.Block
+import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.util.createLogger
 
 /**
@@ -36,8 +36,8 @@ import cn.afeibaili.jump.common.util.createLogger
  * @version 2026/6/3 12:48
  */
 
-class MapParser {
-    private val logger = createLogger { "MapParser" }
+class WorldParser {
+    private val logger = createLogger { "WorldParser" }
 
     /**
      * 解析地图内容，并转换为对象
@@ -49,7 +49,7 @@ class MapParser {
      * @see World
      */
     fun parse(text: String): World {
-        var mapName = "unnamed"
+        var worldName = "unnamed"
         val charBlockMap = HashMap<Char, Identifier>()
         val blocks = ArrayList<ArrayList<Block>>()
         var rowLine = 0
@@ -69,12 +69,12 @@ class MapParser {
                 if (v == null) throw KeyException("keyword is null: $key")
 
                 when (v.trim()) {
-                    "name" -> mapName = value
+                    "name" -> worldName = value
                 }
             } else {
                 val key = key
                 if (key.length != 1) throw KeyException("key not's char: $key")
-                charBlockMap[key[0]] = Identifier("tile", value)
+                charBlockMap[key[0]] = Identifier("block", value)
             }
         }
 
@@ -106,7 +106,7 @@ class MapParser {
             rowLine--
         }
 
-        logger.info("[$mapName] map is load")
-        return World(mapName, blocks).also { logger.debug(it) }
+        logger.info("[$worldName] world is load")
+        return World(worldName, blocks).also { logger.debug(it) }
     }
 }
