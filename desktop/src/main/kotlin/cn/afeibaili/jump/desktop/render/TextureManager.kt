@@ -1,7 +1,12 @@
 package cn.afeibaili.jump.desktop.render
 
 import cn.afeibaili.gl.image.TextureAtlas
+import cn.afeibaili.gl.image.TextureModel
+import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
+import cn.afeibaili.jump.common.util.createLogger
+import java.awt.image.BufferedImage
+import kotlin.random.Random
 
 
 /**
@@ -12,6 +17,41 @@ import cn.afeibaili.jump.common.resource.ResourceFileGetter
  */
 
 object TextureManager {
-    val blockTextureAtlas = TextureAtlas.create("block",ResourceFileGetter.getResourceFileList("tile"))
+    const val DEFAULT_MODEL_SIZE = 16
 
+    private val logger = createLogger { "TextureManager" }
+
+    val air = TextureModel.create(Blocks.AIR.id) {
+        val image = getDefaultImage()
+        image
+    }
+
+    val error = TextureModel.create(Blocks.ERROR.id) {
+        val seed: Long = System.currentTimeMillis()
+        val random = Random(seed)
+        logger.info("error random seed: $seed")
+
+        defaultImage {
+            for (y in 0 until height) {
+                for (x in 0 until width) {
+                    val rgb: Int = (random.nextInt() ushr 8) or (0xff shl 24)
+                    setRGB(y, x, rgb)
+                }
+            }
+        }
+    }
+
+    val blockTextureAtlas = TextureAtlas.create(
+        "block",
+        ResourceFileGetter.getResourceFileList("block"),
+        1,
+        air, error,
+    )
+
+    fun getDefaultImage() = BufferedImage(DEFAULT_MODEL_SIZE, DEFAULT_MODEL_SIZE, BufferedImage.TYPE_INT_ARGB)
+    fun defaultImage(imageAction: BufferedImage.() -> Unit): BufferedImage {
+        val image: BufferedImage = getDefaultImage()
+        imageAction(image)
+        return image
+    }
 }

@@ -31,7 +31,7 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
 data class KeySet(val identifier: Identifier) : TickHandler {
     companion object {
         @JvmStatic
-        private val logger = createLogger { "KetSet" }
+        private val logger = createLogger { "KeySet" }
         val all = HashSet<KeySet>()
         fun addSet(keySet: KeySet) {
             all.add(keySet)

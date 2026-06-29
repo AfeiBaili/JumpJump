@@ -18,23 +18,24 @@ class WorldModel private constructor(
     val size: Int,
     val atlas: TextureAtlas,
 ) {
+
     companion object {
         val blocksTexture get() = TextureManager.blockTextureAtlas
 
         fun of(world: World): WorldModel {
             val blockModels = ArrayList<ArrayList<BlockModel>>()
 
-            world.blocks.forEach { tileLine ->
+            world.blocks.forEach { blockLine ->
                 val blockModelLine = ArrayList<BlockModel>()
-                tileLine.forEach { tile ->
+                blockLine.forEach { block ->
                     val uv = FloatArray(4)
-                    blocksTexture.getUv(tile.type.identifier.id, uv)
-                    blockModelLine.add(BlockModel(tile, uv))
+                    blocksTexture.getUv(block.type.id, uv)
+                    blockModelLine.add(BlockModel(block, uv))
                 }
                 blockModels.add(blockModelLine)
             }
 
-            val size: Int = world.blocks.sumOf { tileLine -> tileLine.size }
+            val size: Int = world.blocks.sumOf { blockLine -> blockLine.size }
 
             return WorldModel(world, blockModels, size, blocksTexture)
         }

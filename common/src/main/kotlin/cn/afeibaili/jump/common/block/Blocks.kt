@@ -13,7 +13,7 @@ import cn.afeibaili.jump.common.util.createLogger
 
 object Blocks {
     val blockTypeMap = HashMap<Identifier, BlockType>()
-    private val logger = createLogger { "Tiles" }
+    private val logger = createLogger { "Blocks" }
 
     val ERROR = register("error")
     val AIR = register("air")
@@ -22,7 +22,7 @@ object Blocks {
     val GRASS = register("grass")
 
     fun register(id: String): BlockType {
-        val identifier = Identifier("tile", id)
+        val identifier = Identifier("block", id)
         logger.info("registering $identifier")
         return BlockType(identifier).also { blockTypeMap[identifier] = it }
     }

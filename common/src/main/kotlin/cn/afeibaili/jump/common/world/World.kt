@@ -15,7 +15,7 @@ class World(val name: String, val blocks: List<List<Block>>) {
         return buildString {
             appendLine("world name: $name")
             blocks.forEach {
-                appendLine("|--tile ${it.joinToString("")}")
+                appendLine("|--block ${it.joinToString("")}")
             }
         }
     }
