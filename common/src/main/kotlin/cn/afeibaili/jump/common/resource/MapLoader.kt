@@ -2,7 +2,7 @@ package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.exception.WorldException
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.common.map.Map
+import cn.afeibaili.jump.common.map.World
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -18,22 +18,22 @@ import java.io.FileNotFoundException
  * @version 2026/6/2 22:58
  */
 
-object MapLoader : Loader<List<Map>> {
+object MapLoader : Loader<List<World>> {
     private val worldPath = "${System.getProperty("user.dir")}/resource/map"
     private val logger = createLogger { "MapLoader" }
     private val parser = MapParser()
 
-    override fun load(): List<Map> {
+    override fun load(): List<World> {
         logger.info("map loading...")
         val worldFile: List<File> = getWorldFile()
-        val maps = mutableListOf<Map>()
+        val worlds = mutableListOf<World>()
         worldFile.forEach { file ->
             val text: String = file.readText()
             logger.info("loading map file: ${file.name}")
             val world = parser.parse(text)
-            maps.add(world)
+            worlds.add(world)
         }
-        return maps
+        return worlds
     }
 
     fun getWorldFile(): List<File> {

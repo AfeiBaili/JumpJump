@@ -22,7 +22,12 @@ class Application {
 
         var running = true
         val window: Window = Window.builder() //窗口构建器
-            .buildTitle("跳一跳").buildWidth(800).buildHeight(800).build()
+            .buildTitle("跳一跳")
+            .buildWidth(800)
+            .buildHeight(800)
+            .withVerticalSync(false)
+            .withClearColor(0.1f, 0.1f, 0.1f, 1f)
+            .build()
         val windowSystem = WindowSystem(window) //窗口管理器
         val rendererSystem = RendererSystem() //渲染系统
         val logicThread = LogicThread()

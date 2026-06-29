@@ -13,6 +13,8 @@ interface Entity {
     var y: Float
     var xv: Float
     var yv: Float
+    var pvx: Float
+    var pvy: Float
     val speed: Float
     val maxSpeed: Float
     val smooth: Float

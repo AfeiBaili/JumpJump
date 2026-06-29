@@ -4,10 +4,10 @@ import cn.afeibaili.gl.render.GridRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
-import cn.afeibaili.jump.common.map.MapManager
+import cn.afeibaili.jump.common.map.WorldManager
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.desktop.world.World
+import cn.afeibaili.jump.desktop.world.WorldModel
 
 
 /**
@@ -17,26 +17,26 @@ import cn.afeibaili.jump.desktop.world.World
  * @version 2026/6/6 18:59
  */
 
-class WorldRenderer {
+class WorldRenderer : Renderable {
     private val logger = createLogger { "WorldRenderer" }
 
-    val world get() = _world
+    val world get() = _worldModel
     val camera get() = _camera
     val program get() = _program
     val gridRenderer get() = _gridRenderer
 
-    private lateinit var _world: World
+    private lateinit var _worldModel: WorldModel
     private lateinit var _camera: Camera
     private lateinit var _program: Program
     private lateinit var _gridRenderer: GridRenderer
 
     fun init() {
         logger.info("initialize world")
-        MapManager.load()
+        WorldManager.load()
         logger.info("upload texture to gpu")
-        World.blocksTexture.atlas.forEach { it.texture.upload() }
+        WorldModel.blocksTexture.atlas.forEach { it.texture.upload() }
         logger.info("transform map to world")
-        _world = World.of(MapManager.maps[0])
+        _worldModel = WorldModel.of(WorldManager.worlds[0])
         logger.info("create program")
         _program = Program.create(
             Shader.create(
@@ -53,20 +53,20 @@ class WorldRenderer {
         _gridRenderer = GridRenderer(_program, _camera)
     }
 
-    fun render() {
+    override fun render() {
         _camera.apply()
-        _world.atlas.atlas[0].texture.bind()
+        _worldModel.atlas.atlas[0].texture.bind()
         _gridRenderer.renderGrid(
             {
-                for (blockLine in _world.blocks) {
+                for (blockLine in _worldModel.blockModels) {
                     for (block in blockLine) {
-                        putFloat(block.tile.x.toFloat())
-                        putFloat(block.tile.y.toFloat())
+                        putFloat(block.block.x.toFloat())
+                        putFloat(block.block.y.toFloat())
                     }
                 }
             },
             {
-                for (blocks in _world.blocks) {
+                for (blocks in _worldModel.blockModels) {
                     for (block in blocks) {
                         putFloat(block.uv[0])
                         putFloat(block.uv[1])
@@ -75,7 +75,7 @@ class WorldRenderer {
                     }
                 }
             },
-            _world.size
+            _worldModel.size
         )
     }
 }

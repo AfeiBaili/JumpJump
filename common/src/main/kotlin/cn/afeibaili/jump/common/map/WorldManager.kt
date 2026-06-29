@@ -11,12 +11,12 @@ import cn.afeibaili.jump.common.util.createLogger
  * @version 2026/6/2 23:52
  */
 
-object MapManager {
+object WorldManager {
     private val logger = createLogger { "MapManager" }
-    lateinit var maps: List<Map>
+    lateinit var worlds: List<World>
 
     fun load() {
         logger.info("loading maps...")
-        maps = MapLoader.load()
+        worlds = MapLoader.load()
     }
 }

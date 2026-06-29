@@ -11,8 +11,8 @@ import cn.afeibaili.jump.common.util.createLogger
  *@version 2026/6/2 22:38
  */
 
-object Tiles {
-    val tileTypeMap = HashMap<Identifier, TileType>()
+object Blocks {
+    val blockTypeMap = HashMap<Identifier, BlockType>()
     private val logger = createLogger { "Tiles" }
 
     val ERROR = register("error")
@@ -21,15 +21,15 @@ object Tiles {
     val GRASS_DIRT = register("grass_dirt")
     val GRASS = register("grass")
 
-    fun register(id: String): TileType {
+    fun register(id: String): BlockType {
         val identifier = Identifier("tile", id)
         logger.info("registering $identifier")
-        return TileType(identifier).also { tileTypeMap[identifier] = it }
+        return BlockType(identifier).also { blockTypeMap[identifier] = it }
     }
 
-    fun getBlockTypeById(identifier: Identifier): TileType {
-        val tileType: TileType? = tileTypeMap[identifier]
-        if (tileType == null) return ERROR
-        return tileType
+    fun getBlockTypeById(identifier: Identifier): BlockType {
+        val blockType: BlockType? = blockTypeMap[identifier]
+        if (blockType == null) return ERROR
+        return blockType
     }
 }

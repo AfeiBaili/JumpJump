@@ -14,6 +14,7 @@ class RendererSystem {
     private val logger = createLogger { "RendererSystem" }
     val worldRenderer = WorldRenderer()
     val camera get() = worldRenderer.camera
+    val playerRenderer = PlayerRenderer()
 
     fun init() {
         logger.info("initialize world renderer")
@@ -22,5 +23,6 @@ class RendererSystem {
 
     fun frame() {
         worldRenderer.render()
+        playerRenderer.render()
     }
 }

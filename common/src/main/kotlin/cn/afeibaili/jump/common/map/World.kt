@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.common.map
 
-import cn.afeibaili.jump.common.tile.Tile
+import cn.afeibaili.jump.common.tile.Block
 
 
 /**
@@ -10,11 +10,11 @@ import cn.afeibaili.jump.common.tile.Tile
  *@version 2026/6/2 22:33
  */
 
-class Map(val name: String, val tiles: List<List<Tile>>) {
+class World(val name: String, val blocks: List<List<Block>>) {
     override fun toString(): String {
         return buildString {
             appendLine("map name: $name")
-            tiles.forEach {
+            blocks.forEach {
                 appendLine("|--tile ${it.joinToString("")}")
             }
         }

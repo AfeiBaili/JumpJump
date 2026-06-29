@@ -3,9 +3,9 @@ package cn.afeibaili.jump.common.resource
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.exception.IdentifierException
 import cn.afeibaili.jump.common.exception.KeyException
-import cn.afeibaili.jump.common.map.Map
-import cn.afeibaili.jump.common.tile.Tile
-import cn.afeibaili.jump.common.tile.Tiles
+import cn.afeibaili.jump.common.map.World
+import cn.afeibaili.jump.common.tile.Block
+import cn.afeibaili.jump.common.tile.Blocks
 import cn.afeibaili.jump.common.util.createLogger
 
 /**
@@ -46,12 +46,12 @@ class MapParser {
      *
      * @return 地图对象
      *
-     * @see Map
+     * @see World
      */
-    fun parse(text: String): Map {
+    fun parse(text: String): World {
         var mapName = "unnamed"
         val charBlockMap = HashMap<Char, Identifier>()
-        val tiles = ArrayList<ArrayList<Tile>>()
+        val blocks = ArrayList<ArrayList<Block>>()
         var rowLine = 0
 
         /**
@@ -92,21 +92,21 @@ class MapParser {
             }
 
 
-            val tileRow = ArrayList<Tile>()
+            val blockRow = ArrayList<Block>()
             line.forEachIndexed { indexX, char ->
                 val identifier: Identifier? = charBlockMap[char]
                 if (char == ' ') {
-                    tileRow.add(Tile(indexX, rowLine, Tiles.AIR))
+                    blockRow.add(Block(indexX, rowLine, Blocks.AIR))
                     return@forEachIndexed
                 }
                 if (identifier == null) throw IdentifierException("标识符为空，未知的char: $char")
-                tileRow.add(Tile(indexX, rowLine, Tiles.getBlockTypeById(identifier)))
+                blockRow.add(Block(indexX, rowLine, Blocks.getBlockTypeById(identifier)))
             }
-            tiles.add(tileRow)
+            blocks.add(blockRow)
             rowLine--
         }
 
         logger.info("[$mapName] map is load")
-        return Map(mapName, tiles).also { logger.debug(it) }
+        return World(mapName, blocks).also { logger.debug(it) }
     }
 }

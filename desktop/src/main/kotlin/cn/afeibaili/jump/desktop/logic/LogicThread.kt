@@ -20,8 +20,8 @@ class LogicThread {
 
     val tick = 60f
     val step = 1f / tick
-    private var lastTime = Time.nano()
-    private var accumulationSecondes = 0f
+    var accumulationSecondes = 0f
+    var lastTime = Time.nano()
 
     val thread = Thread({
         while (isActive) {
@@ -43,7 +43,7 @@ class LogicThread {
      * @see TickHandler
      */
     fun update() {
-        TickHandler.all.forEach { it::tick }
+        TickHandler.all.forEach { it.tick() }
     }
 
     fun start() {

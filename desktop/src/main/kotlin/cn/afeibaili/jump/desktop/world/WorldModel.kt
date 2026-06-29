@@ -1,7 +1,7 @@
 package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.image.TextureAtlas
-import cn.afeibaili.jump.common.map.Map
+import cn.afeibaili.jump.common.map.World
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 
 
@@ -12,9 +12,9 @@ import cn.afeibaili.jump.common.resource.ResourceFileGetter
  * @version 2026/6/5 22:43
  */
 
-class World private constructor(
-    val map: Map,
-    val blocks: List<List<Block>>,
+class WorldModel private constructor(
+    val world: World,
+    val blockModels: List<List<BlockModel>>,
     val size: Int,
     val atlas: TextureAtlas,
 ) {
@@ -22,22 +22,22 @@ class World private constructor(
         val blocksTexture =
             TextureAtlas.create("block", ResourceFileGetter.getResourceFileList("tile"))
 
-        fun of(map: Map): World {
-            val blocks = ArrayList<ArrayList<Block>>()
+        fun of(world: World): WorldModel {
+            val blockModels = ArrayList<ArrayList<BlockModel>>()
 
-            map.tiles.forEach { tileLine ->
-                val blockLine = ArrayList<Block>()
+            world.blocks.forEach { tileLine ->
+                val blockModelLine = ArrayList<BlockModel>()
                 tileLine.forEach { tile ->
                     val uv = FloatArray(4)
                     blocksTexture.getUv(tile.type.identifier.id, uv)
-                    blockLine.add(Block(tile, uv))
+                    blockModelLine.add(BlockModel(tile, uv))
                 }
-                blocks.add(blockLine)
+                blockModels.add(blockModelLine)
             }
 
-            val size: Int = map.tiles.sumOf { tileLine -> tileLine.size }
+            val size: Int = world.blocks.sumOf { tileLine -> tileLine.size }
 
-            return World(map, blocks, size, blocksTexture)
+            return WorldModel(world, blockModels, size, blocksTexture)
         }
     }
 }

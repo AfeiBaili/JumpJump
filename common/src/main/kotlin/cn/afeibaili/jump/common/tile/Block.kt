@@ -8,4 +8,4 @@ package cn.afeibaili.jump.common.tile
  *@version 2026/6/2 22:36
  */
 
-data class Tile(val x: Int, val y: Int, val type: TileType)
+data class Block(val x: Int, val y: Int, val type: BlockType)
