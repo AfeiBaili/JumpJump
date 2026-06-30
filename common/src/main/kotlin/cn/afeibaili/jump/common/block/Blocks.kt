@@ -12,7 +12,7 @@ import cn.afeibaili.jump.common.util.createLogger
  */
 
 object Blocks {
-    val blockTypeMap = HashMap<Identifier, BlockType>()
+    val all = HashMap<Identifier, BlockType>()
     private val logger = createLogger { "Blocks" }
 
     val ERROR = register("error")
@@ -24,11 +24,11 @@ object Blocks {
     fun register(id: String): BlockType {
         val identifier = Identifier("block", id)
         logger.info("registering $identifier")
-        return BlockType(identifier).also { blockTypeMap[identifier] = it }
+        return BlockType(identifier).also { all[identifier] = it }
     }
 
     fun getBlockTypeById(identifier: Identifier): BlockType {
-        val blockType: BlockType? = blockTypeMap[identifier]
+        val blockType: BlockType? = all[identifier]
         if (blockType == null) return ERROR
         return blockType
     }

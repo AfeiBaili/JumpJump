@@ -18,20 +18,20 @@ import java.io.FileNotFoundException
  * @version 2026/6/2 22:58
  */
 
-object WorldLoader : Loader<List<World>> {
+object WorldLoader : Loader<Map<String, World>> {
     private val worldPath = "${System.getProperty("user.dir")}/resource/world"
     private val logger = createLogger { "WorldLoader" }
     private val parser = WorldParser()
 
-    override fun load(): List<World> {
+    override fun load(): Map<String, World> {
         logger.info("world loading...")
         val worldFile: List<File> = getWorldFile()
-        val worlds = mutableListOf<World>()
+        val worlds = mutableMapOf<String, World>()
         worldFile.forEach { file ->
             val text: String = file.readText()
             logger.info("loading world file: ${file.name}")
             val world = parser.parse(text)
-            worlds.add(world)
+            worlds[world.name] = world
         }
         return worlds
     }

@@ -13,7 +13,7 @@ import cn.afeibaili.jump.common.util.createLogger
 
 object WorldManager {
     private val logger = createLogger { "WorldManager" }
-    lateinit var worlds: List<World>
+    lateinit var worlds: Map<String, World>
 
     fun load() {
         logger.info("loading worlds...")
