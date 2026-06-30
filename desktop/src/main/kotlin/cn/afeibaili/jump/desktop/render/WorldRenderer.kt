@@ -53,12 +53,12 @@ class WorldRenderer : Renderable {
     }
 
     override fun render() {
-        _camera.apply()
+        camera.apply()
 
         world.blockModels.forEach { blockModel ->
             blockModel.texture.bind()
 
-            _gridRenderer.renderGrid(
+            gridRenderer.renderGrid(
                 {
                     for (block in blockModel.blockModel) {
                         putFloat(block.x.toFloat())
