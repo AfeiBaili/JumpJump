@@ -54,8 +54,6 @@ class WorldRenderer : Renderable {
 
     override fun render() {
         _camera.apply()
-        //todo
-        //world.atlas.atlas[0]!!.texture.bind()
 
         world.blockModels.forEach { blockModel ->
             blockModel.texture.bind()
