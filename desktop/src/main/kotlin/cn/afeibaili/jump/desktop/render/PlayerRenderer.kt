@@ -19,7 +19,7 @@ class PlayerRenderer : Renderable {
 
     override fun render() {
         // 插值渲染
-        val alpha = logic.accumulationSecondes / logic.step // 当前步进度
+        val alpha = logic.accumulationSecondes / logic.step // 当前进度
         val renderX = player.pvx + (player.x - player.pvx) * alpha
         val renderY = player.pvy + (player.y - player.pvy) * alpha
         camera.translation(renderX, renderY)

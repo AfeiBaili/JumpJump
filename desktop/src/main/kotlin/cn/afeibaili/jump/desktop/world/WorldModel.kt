@@ -1,7 +1,10 @@
 package cn.afeibaili.jump.desktop.world
 
+import cn.afeibaili.gl.exception.ImageException
+import cn.afeibaili.gl.image.Atlas
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
+import cn.afeibaili.gl.tool.Index
 import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.desktop.block.BlockModel
 import cn.afeibaili.jump.desktop.block.BlockUv
@@ -27,18 +30,19 @@ class WorldModel private constructor(
         val textureSideMap get() = TextureManager.textureSideMap
 
         fun of(world: World): WorldModel {
+            // 图集Index（id）
             val blockIndexModelMap =
-                mutableMapOf<TextureAtlas.Index, Pair<Texture, MutableList<BlockModel>>>()
+                mutableMapOf<Index, Pair<Texture, MutableList<BlockModel>>>()
 
             world.blocks.flatMap { it }.forEach { block ->
-                val uv = FloatArray(4)
-                val atlas: TextureAtlas.Atlas = blockTextureAtlas.getUv(block.type.id, uv)
+                val atlas: Atlas? = blockTextureAtlas.getAtlas(block.type.id)
+                if (atlas == null) throw ImageException("在图集中找不到此id: ${block.type.id}")
+                val uvs: List<FloatArray> = blockTextureAtlas.getUvs(block.type.id)
                 val texture: Texture = textureSideMap[atlas.atlasId]!!
                 val pair = blockIndexModelMap[atlas.atlasId]
-                //todo arrayOf可能是动态的
                 if (pair == null) blockIndexModelMap[atlas.atlasId] =
-                    texture to mutableListOf(BlockModel(block.x, block.y, BlockUv(arrayOf(uv))))
-                else pair.second.add(BlockModel(block.x, block.y, BlockUv(arrayOf(uv))))
+                    texture to mutableListOf(BlockModel(block.x, block.y, BlockUv(uvs)))
+                else pair.second.add(BlockModel(block.x, block.y, BlockUv(uvs)))
             }
 
             val blockAtlases: List<BlockAtlas> = blockIndexModelMap.toList()

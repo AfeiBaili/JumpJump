@@ -3,6 +3,7 @@ package cn.afeibaili.jump.desktop.render.texture
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.image.TextureModel
+import cn.afeibaili.gl.tool.Index
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.createLogger
@@ -47,7 +48,7 @@ object TextureManager {
         1,
         air, error,
     )
-    val textureSideMap: Map<TextureAtlas.Index, Texture> =
+    val textureSideMap: Map<Index, Texture> =
         blockTextureAtlas.atlas.map { it.key to it.value.texture }.toMap()
 
     fun getDefaultImage() = BufferedImage(DEFAULT_MODEL_SIZE, DEFAULT_MODEL_SIZE, BufferedImage.TYPE_INT_ARGB)

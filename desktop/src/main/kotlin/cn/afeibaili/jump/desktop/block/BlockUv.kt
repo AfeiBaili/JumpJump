@@ -8,7 +8,7 @@ package cn.afeibaili.jump.desktop.block
  * @version 2026/6/30 12:32
  */
 
-class BlockUv(val uv: Array<FloatArray>) {
+class BlockUv(val uv: List<FloatArray>) {
     var indexUv = 0
 
     fun getNext(): FloatArray {
