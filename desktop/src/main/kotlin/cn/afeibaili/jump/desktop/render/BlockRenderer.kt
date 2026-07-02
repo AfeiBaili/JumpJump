@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.jump.desktop.block.BlockModel
+import cn.afeibaili.jump.desktop.block.BlockModelType
 
 
 /**
@@ -11,13 +11,13 @@ import cn.afeibaili.jump.desktop.block.BlockModel
  */
 
 class BlockRenderer {
-    val block get() = BlockModel.all
+    val blockType get() = BlockModelType.all
 
     fun init() {
 
     }
 
     fun update() {
-        block.forEach { it.blockUv.update() }
+        blockType.forEach { it.uv.update() }
     }
 }

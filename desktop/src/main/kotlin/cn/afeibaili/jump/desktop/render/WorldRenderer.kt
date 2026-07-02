@@ -67,7 +67,7 @@ class WorldRenderer : Renderable {
                 },
                 {
                     for (block in blockModel.blockModel) {
-                        val uv = block.blockUv.get()
+                        val uv = block.type.uv.get()
                         putFloat(uv[0])
                         putFloat(uv[1])
                         putFloat(uv[2])

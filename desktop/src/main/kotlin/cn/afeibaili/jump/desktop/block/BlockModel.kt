@@ -7,7 +7,7 @@ package cn.afeibaili.jump.desktop.block
  * @version 2026/6/5 22:43
  */
 
-class BlockModel(val x: Int, val y: Int, val blockUv: BlockUv) {
+class BlockModel(val x: Int, val y: Int, val type: BlockModelType) {
     companion object {
         val all = mutableListOf<BlockModel>()
 

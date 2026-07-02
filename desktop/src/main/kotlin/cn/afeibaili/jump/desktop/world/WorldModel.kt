@@ -5,8 +5,10 @@ import cn.afeibaili.gl.image.Atlas
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.tool.Index
+import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.desktop.block.BlockModel
+import cn.afeibaili.jump.desktop.block.BlockModelType
 import cn.afeibaili.jump.desktop.block.BlockUv
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 
@@ -34,13 +36,21 @@ class WorldModel private constructor(
             val blockIndexModelMap =
                 mutableMapOf<Index, Pair<Texture, MutableList<BlockModel>>>()
 
+            val typeMap = mutableMapOf<Identifier, BlockModelType>()
+
             world.blocks.flatMap { it }.forEach { block ->
                 val atlas: Atlas? = blockTextureAtlas.getAtlas(block.type.id)
                 if (atlas == null) throw ImageException("在图集中找不到此id: ${block.type.id}")
                 val uvs: List<FloatArray> = blockTextureAtlas.getUvs(block.type.id)
+
+                var type: BlockModelType? = typeMap[block.type.identifier]
+                if (type == null)
+                    typeMap[block.type.identifier] = BlockModelType.register(block.type.identifier, BlockUv(uvs))
+                type = typeMap[block.type.identifier]
+
                 val texture: Texture = textureSideMap[atlas.atlasId]!!
                 val pair = blockIndexModelMap[atlas.atlasId]
-                val blockModel = BlockModel(block.x, block.y, BlockUv(uvs))
+                val blockModel = BlockModel(block.x, block.y, type!!)
                 BlockModel += blockModel // 添加到BlockModel.all属性中
                 if (pair == null) blockIndexModelMap[atlas.atlasId] =
                     texture to mutableListOf(blockModel)
