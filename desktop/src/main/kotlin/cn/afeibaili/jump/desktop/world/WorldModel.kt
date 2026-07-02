@@ -40,9 +40,11 @@ class WorldModel private constructor(
                 val uvs: List<FloatArray> = blockTextureAtlas.getUvs(block.type.id)
                 val texture: Texture = textureSideMap[atlas.atlasId]!!
                 val pair = blockIndexModelMap[atlas.atlasId]
+                val blockModel = BlockModel(block.x, block.y, BlockUv(uvs))
+                BlockModel += blockModel // 添加到BlockModel.all属性中
                 if (pair == null) blockIndexModelMap[atlas.atlasId] =
-                    texture to mutableListOf(BlockModel(block.x, block.y, BlockUv(uvs)))
-                else pair.second.add(BlockModel(block.x, block.y, BlockUv(uvs)))
+                    texture to mutableListOf(blockModel)
+                else pair.second.add(blockModel)
             }
 
             val blockAtlases: List<BlockAtlas> = blockIndexModelMap.toList()

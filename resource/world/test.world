@@ -3,11 +3,12 @@
 D = dirt
 G = grass_dirt
 g = grass
-ggg     gggg
+h = grass_tall
+ghh     hhgg
 GGG     GGGG
 DD    g DDDD
      GGGDDDD
-gg   DDDDDDD
+hg   DDDDDDD
 GG     DDDDD
 DDggg  DDDDD
 DDGGGGGDDDDD

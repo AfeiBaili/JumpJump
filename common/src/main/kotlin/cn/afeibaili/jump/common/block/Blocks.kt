@@ -20,6 +20,7 @@ object Blocks {
     val DIRT = register("dirt")
     val GRASS_DIRT = register("grass_dirt")
     val GRASS = register("grass")
+    val GRASS_TALL = register("grass_tall")
 
     fun register(id: String): BlockType {
         val identifier = Identifier("block", id)
@@ -29,7 +30,10 @@ object Blocks {
 
     fun getBlockTypeById(identifier: Identifier): BlockType {
         val blockType: BlockType? = all[identifier]
-        if (blockType == null) return ERROR
+        if (blockType == null) {
+            logger.warn("not found $identifier")
+            return ERROR
+        }
         return blockType
     }
 }

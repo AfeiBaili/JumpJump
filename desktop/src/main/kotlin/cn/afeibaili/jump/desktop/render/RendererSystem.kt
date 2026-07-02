@@ -15,13 +15,17 @@ class RendererSystem {
     val worldRenderer = WorldRenderer()
     val camera get() = worldRenderer.camera
     val playerRenderer = PlayerRenderer()
+    val blockRenderer = BlockRenderer()
 
     fun init() {
         logger.info("initialize world renderer")
         worldRenderer.init()
+        logger.info("initialize block renderer")
+        blockRenderer.init()
     }
 
     fun frame() {
+        blockRenderer.update()
         worldRenderer.render()
         playerRenderer.render()
     }
