@@ -1,4 +1,4 @@
-package cn.afeibaili.jump.desktop.block
+package cn.afeibaili.jump.desktop.world.block
 
 import cn.afeibaili.gl.tool.Time
 

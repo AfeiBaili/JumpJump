@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.jump.desktop.block.BlockModelType
+import cn.afeibaili.jump.desktop.world.block.BlockModelType
 
 
 /**

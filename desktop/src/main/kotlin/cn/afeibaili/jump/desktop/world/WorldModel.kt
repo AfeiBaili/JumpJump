@@ -6,11 +6,13 @@ import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.tool.Index
 import cn.afeibaili.jump.common.Identifier
+import cn.afeibaili.jump.common.json.BlockInfo
+import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.world.World
-import cn.afeibaili.jump.desktop.block.BlockModel
-import cn.afeibaili.jump.desktop.block.BlockModelType
-import cn.afeibaili.jump.desktop.block.BlockUv
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
+import cn.afeibaili.jump.desktop.world.block.BlockModel
+import cn.afeibaili.jump.desktop.world.block.BlockModelType
+import cn.afeibaili.jump.desktop.world.block.BlockUv
 
 /**
  * # 世界、关卡实例
@@ -35,8 +37,8 @@ class WorldModel private constructor(
             // 图集Index（id）
             val blockIndexModelMap =
                 mutableMapOf<Index, Pair<Texture, MutableList<BlockModel>>>()
-
             val typeMap = mutableMapOf<Identifier, BlockModelType>()
+            val blockInfo = BlockInfoLoader.load()
 
             world.blocks.flatMap { it }.forEach { block ->
                 val atlas: Atlas? = blockTextureAtlas.getAtlas(block.type.id)
@@ -44,8 +46,12 @@ class WorldModel private constructor(
                 val uvs: List<FloatArray> = blockTextureAtlas.getUvs(block.type.id)
 
                 var type: BlockModelType? = typeMap[block.type.identifier]
-                if (type == null)
-                    typeMap[block.type.identifier] = BlockModelType.register(block.type.identifier, BlockUv(uvs))
+                if (type == null) {
+                    val info: BlockInfo? = blockInfo[block.type.id]
+                    val switchIntervalMilli: Int = info?.switchIntervalMilli ?: 500
+                    typeMap[block.type.identifier] =
+                        BlockModelType.register(block.type.identifier, BlockUv(uvs, switchIntervalMilli))
+                }
                 type = typeMap[block.type.identifier]
 
                 val texture: Texture = textureSideMap[atlas.atlasId]!!
