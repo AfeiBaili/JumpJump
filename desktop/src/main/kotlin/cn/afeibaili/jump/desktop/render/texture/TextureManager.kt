@@ -27,12 +27,12 @@ object TextureManager {
         image
     }
 
-    val error = TextureModel.create(Blocks.ERROR.id) {
+    val error = TextureModel.createDynamic(Blocks.ERROR.id) {
         val seed: Long = System.currentTimeMillis()
         val random = Random(seed)
         logger.info("error random seed: $seed")
 
-        defaultImage {
+        fun getErrorImage(): BufferedImage = defaultImage {
             for (y in 0 until height) {
                 for (x in 0 until width) {
                     val rgb: Int = (random.nextInt() ushr 8) or (0xff shl 24)
@@ -40,13 +40,21 @@ object TextureManager {
                 }
             }
         }
+
+        listOf(
+            getErrorImage(),
+            getErrorImage(),
+            getErrorImage(),
+            getErrorImage(),
+            getErrorImage(),
+        )
     }
 
     val blockTextureAtlas = TextureAtlas.create(
         "block",
         ResourceFileGetter.getResourceFileList("block"),
         1,
-        air, error,
+        air, *error.toTypedArray(),
     )
     val textureSideMap: Map<Index, Texture> =
         blockTextureAtlas.atlas.map { it.key to it.value.texture }.toMap()
