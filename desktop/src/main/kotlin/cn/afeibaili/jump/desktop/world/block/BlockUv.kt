@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.world.block
 
-import cn.afeibaili.gl.tool.Time
+import cn.afeibaili.gl.util.Time
 
 
 /**

@@ -4,7 +4,7 @@ import cn.afeibaili.gl.exception.ImageException
 import cn.afeibaili.gl.image.Atlas
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
-import cn.afeibaili.gl.tool.Index
+import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.json.BlockInfo

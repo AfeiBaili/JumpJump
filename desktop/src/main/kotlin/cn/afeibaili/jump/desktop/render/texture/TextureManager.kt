@@ -3,7 +3,7 @@ package cn.afeibaili.jump.desktop.render.texture
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.image.TextureModel
-import cn.afeibaili.gl.tool.Index
+import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.createLogger

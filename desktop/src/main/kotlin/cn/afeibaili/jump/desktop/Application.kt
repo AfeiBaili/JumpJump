@@ -55,7 +55,7 @@ class Application {
             WorldManager.load()
             return WorldModel.of(
                 WorldManager.worlds[worldName] ?: throw IllegalArgumentException(
-                    "未知的世界i: $worldName; 当前世界列表${WorldManager.worlds.keys.joinToString("、")}"
+                    "未知的世界: $worldName; 当前世界列表${WorldManager.worlds.keys.joinToString("、")}"
                 )
             )
         }

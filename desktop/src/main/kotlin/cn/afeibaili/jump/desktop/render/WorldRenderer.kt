@@ -22,7 +22,6 @@ class WorldRenderer : Renderable {
     private val logger = createLogger { "WorldRenderer" }
 
     val camera get() = _camera
-    val program get() = _program
     val gridRenderer get() = _gridRenderer
     val world get() = Application.world
 
@@ -53,8 +52,6 @@ class WorldRenderer : Renderable {
     }
 
     override fun render() {
-        camera.apply()
-
         world.blockModels.forEach { blockModel ->
             blockModel.texture.bind()
 

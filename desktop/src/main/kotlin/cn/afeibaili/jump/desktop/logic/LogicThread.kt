@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.logic
 
-import cn.afeibaili.gl.tool.Time
+import cn.afeibaili.gl.util.Time
 import cn.afeibaili.jump.desktop.Application
 
 
