@@ -5,9 +5,9 @@ import cn.afeibaili.gl.font.Text
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.RowWeight
-import cn.afeibaili.gl.render.layout.SettingWeight
-import cn.afeibaili.gl.render.layout.shape.Rect
+import cn.afeibaili.gl.render.layout.UnknownLayout
+import cn.afeibaili.gl.render.layout.shape.rectangle
+import cn.afeibaili.gl.render.layout.weigth.rowWeight
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -30,10 +30,6 @@ class DebugRenderer {
     var textRenderer: TextRenderer? = null
     var rectRenderer: RectangleRenderer? = null
     val window get() = Application.Companion.window
-    val weightContainer = RowWeight(setting = SettingWeight(), Application.screen) {
-        +Rect(setting = SettingWeight(), this).apply { weight = 1f }
-        +Rect(setting = SettingWeight(), this).apply { weight = 1f }
-    }
 
     fun init() {
         textProgram = Program.Companion.create(
@@ -56,12 +52,7 @@ class DebugRenderer {
         camera!!.ortho(0f, window.width.toFloat(), 0f, window.height.toFloat(), -1f, 1f)
         textRenderer = TextRenderer(font, textProgram!!, camera!!)
         rectRenderer = RectangleRenderer(rectProgram!!, camera!!)
-
-        weightContainer.init()
-        weightContainer.items.forEach { item ->
-            println("x = ${item.x}, y = ${item.y}, width = ${item.width}, height = ${item.height}")
-            rectRenderer!!.put(item.toString(), item.x, item.y, item.width, item.height)
-        }
+        initLayout()
     }
 
     fun buildText() {
@@ -72,5 +63,20 @@ class DebugRenderer {
         buildText()
         textRenderer!!.render()
         rectRenderer!!.render()
+    }
+
+    fun initLayout() {
+        val rowWeight: UnknownLayout = Application.screen.rowWeight {
+            rectangle().setWeight(5f).setting {
+                it.setOffsetX(0f).setOffsetY(5f)
+            }
+            rectangle().setWeight(5f).setting {
+                it.setOffsetX(0f).setOffsetY(5f)
+            }
+        }
+
+        rowWeight.items.forEach { it ->
+            rectRenderer!!.put(it.toString(), it.x, it.y, it.width, it.height)
+        }
     }
 }
