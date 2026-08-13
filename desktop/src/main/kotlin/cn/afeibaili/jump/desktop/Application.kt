@@ -22,17 +22,19 @@ import cn.afeibaili.jump.desktop.world.WorldModel
 class Application {
     companion object {
         private val logger = createLogger { "Application" } //日志器
+        const val INIT_SCREEN_WIDTH = 800
+        const val INIT_SCREEN_HEIGHT = 800
 
         var running = true
         val window: Window = Window.builder() //窗口构建器
             .buildTitle("像素决斗")
-            .buildWidth(800)
-            .buildHeight(800)
+            .buildWidth(INIT_SCREEN_WIDTH)
+            .buildHeight(INIT_SCREEN_HEIGHT)
             .withVerticalSync(false)
             .withClearColor(0.1f, 0.1f, 0.1f, 1f)
             .build()
         val windowSystem = WindowSystem(window) //窗口管理器
-        val screen = ScreenLayout()
+        val screen = ScreenLayout(INIT_SCREEN_WIDTH.toFloat(), INIT_SCREEN_HEIGHT.toFloat())
         val rendererSystem = RendererSystem() //渲染系统
         val logicThread = LogicThread()
         val camera get() = rendererSystem.worldRenderer.camera
