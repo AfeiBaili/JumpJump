@@ -19,6 +19,9 @@ class WindowSystem(val window: Window = Application.window) {
             window.setViewport(w, h)
             Application.rendererSystem.worldRenderer.camera
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
+            Application.rendererSystem.debugRenderer.camera!!
+                .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
+            Application.screen.update(w.toFloat(), h.toFloat())
         }
 
         GLFW.glfwSetWindowCloseCallback(window.windowLocation) {

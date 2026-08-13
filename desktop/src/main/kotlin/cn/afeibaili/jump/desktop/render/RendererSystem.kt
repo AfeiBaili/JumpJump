@@ -1,7 +1,9 @@
 package cn.afeibaili.jump.desktop.render
 
+import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.jump.common.util.createLogger
-import cn.afeibaili.jump.desktop.render.text.DebugRenderer
+import cn.afeibaili.jump.desktop.render.DebugRenderer
+import cn.afeibaili.jump.desktop.render.text.FpsTimer
 
 
 /**
@@ -17,6 +19,8 @@ class RendererSystem {
     val playerRenderer = PlayerRenderer()
     val blockRenderer = BlockRenderer()
     val debugRenderer = DebugRenderer()
+    val rectangleRenderer get() = debugRenderer.rectRenderer
+    val fps = FpsTimer()
 
     fun init() {
         logger.info("initialize world renderer")
@@ -28,6 +32,7 @@ class RendererSystem {
     }
 
     fun frame() {
+        fps.update()
         blockRenderer.update()
         worldRenderer.render()
         playerRenderer.render()
