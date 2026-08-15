@@ -13,7 +13,7 @@ import cn.afeibaili.jump.common.block.Block
 class World(val name: String, val blocks: List<List<Block>>) {
     override fun toString(): String {
         return buildString {
-            appendLine("world name: $name")
+            appendLine("world name is $name")
             blocks.forEach {
                 appendLine("|--block ${it.joinToString("")}")
             }

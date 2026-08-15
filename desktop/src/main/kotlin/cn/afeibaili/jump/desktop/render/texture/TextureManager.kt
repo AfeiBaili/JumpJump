@@ -6,7 +6,7 @@ import cn.afeibaili.gl.image.TextureModel
 import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import java.awt.image.BufferedImage
 import kotlin.random.Random
 
@@ -20,7 +20,7 @@ import kotlin.random.Random
 object TextureManager {
     const val DEFAULT_MODEL_SIZE = 16
 
-    private val logger = createLogger { "TextureManager" }
+    private val logger = logger { "TextureManager" }
 
     val air = TextureModel.create(Blocks.AIR.id) {
         val image = getDefaultImage()

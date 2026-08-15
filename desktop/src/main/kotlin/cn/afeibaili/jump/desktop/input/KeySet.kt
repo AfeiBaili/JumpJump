@@ -3,7 +3,7 @@ package cn.afeibaili.jump.desktop.input
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.input.KeyBind
 import cn.afeibaili.jump.common.Identifier
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.logic.TickHandler
 
@@ -31,7 +31,7 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
 data class KeySet(val identifier: Identifier) : TickHandler {
     companion object {
         @JvmStatic
-        private val logger = createLogger { "KeySet" }
+        private val logger = logger { "KeySet" }
         val all = HashSet<KeySet>()
         fun addSet(keySet: KeySet) {
             all.add(keySet)
@@ -54,7 +54,7 @@ data class KeySet(val identifier: Identifier) : TickHandler {
     }
 
     fun bind(key: Key, callback: KeyBind.() -> Unit) {
-        logger.info("registering key set: $identifier, ${key.id}")
+        logger.info("registering key set for ${key.id}")
         set.add(KeyBind(key, Application.window) to callback)
     }
 

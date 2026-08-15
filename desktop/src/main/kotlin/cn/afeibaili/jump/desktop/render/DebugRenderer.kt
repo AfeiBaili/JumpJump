@@ -11,6 +11,7 @@ import cn.afeibaili.gl.render.layout.weigth.rowWeight
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 
 /**
@@ -21,6 +22,7 @@ import cn.afeibaili.jump.desktop.Application
  */
 
 class DebugRenderer {
+    private val logger = logger { "DebugRenderer" }
     val font = FontManager.create(
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 32
     )
@@ -76,7 +78,7 @@ class DebugRenderer {
         }
 
         rowWeight.items.forEach { it ->
-            println("x = ${it.x}, y = ${it.y}, width = ${it.width}, height = ${it.height}")
+            logger.debug("x = ${it.x}, y = ${it.y}, width = ${it.width}, height = ${it.height}")
             rectRenderer!!.put(it.toString(), it.x, it.y, it.width, it.height)
         }
     }

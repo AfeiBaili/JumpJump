@@ -1,7 +1,7 @@
 package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.resource.WorldLoader
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 
 
 /**
@@ -12,7 +12,7 @@ import cn.afeibaili.jump.common.util.createLogger
  */
 
 object WorldManager {
-    private val logger = createLogger { "WorldManager" }
+    private val logger = logger { "WorldManager" }
     lateinit var worlds: Map<String, World>
 
     fun load() {

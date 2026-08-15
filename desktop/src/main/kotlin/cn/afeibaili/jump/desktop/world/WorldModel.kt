@@ -9,7 +9,7 @@ import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 import cn.afeibaili.jump.desktop.world.block.BlockModel
@@ -37,7 +37,7 @@ class WorldModel private constructor(
 
         // 加载BlockInfo
         val blockInfo = BlockInfoLoader.load()
-        private val logger = createLogger { "WorldModel" }
+        private val logger = logger { "WorldModel" }
 
         fun of(world: World): WorldModel {
             // 图集Index（id）

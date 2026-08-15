@@ -1,7 +1,7 @@
 package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.exception.WorldException
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.common.world.World
 import java.io.File
 import java.io.FileNotFoundException
@@ -20,7 +20,7 @@ import java.io.FileNotFoundException
 
 object WorldLoader : Loader<Map<String, World>> {
     private val worldPath = "${System.getProperty("user.dir")}/resource/world"
-    private val logger = createLogger { "WorldLoader" }
+    private val logger = logger { "WorldLoader" }
     private val parser = WorldParser()
 
     override fun load(): Map<String, World> {

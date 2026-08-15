@@ -1,7 +1,7 @@
 package cn.afeibaili.jump.common.block
 
 import cn.afeibaili.jump.common.Identifier
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 
 
 /**
@@ -13,7 +13,7 @@ import cn.afeibaili.jump.common.util.createLogger
 
 object Blocks {
     val all = HashMap<Identifier, BlockType>()
-    private val logger = createLogger { "Blocks" }
+    private val logger = logger { "Blocks" }
 
     val ERROR = register("error")
     val AIR = register("air")

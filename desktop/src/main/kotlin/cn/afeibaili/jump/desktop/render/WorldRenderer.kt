@@ -5,7 +5,7 @@ import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.common.world.WorldManager
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.world.WorldModel
@@ -19,7 +19,7 @@ import cn.afeibaili.jump.desktop.world.WorldModel
  */
 
 class WorldRenderer : Renderable {
-    private val logger = createLogger { "WorldRenderer" }
+    private val logger = logger { "WorldRenderer" }
 
     val camera get() = _camera
     val gridRenderer get() = _gridRenderer
@@ -30,8 +30,6 @@ class WorldRenderer : Renderable {
     private lateinit var _gridRenderer: GridRenderer
 
     fun init() {
-        logger.info("initialize world")
-        WorldManager.load()
         logger.info("upload texture to gpu")
         WorldModel.blockTextureAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
         logger.info("transform to world model")

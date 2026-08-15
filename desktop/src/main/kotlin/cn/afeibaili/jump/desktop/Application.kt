@@ -3,7 +3,7 @@ package cn.afeibaili.jump.desktop
 import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
 import cn.afeibaili.gl.render.layout.ScreenLayout
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.common.world.WorldManager
 import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.logic.LogicThread
@@ -21,10 +21,15 @@ import cn.afeibaili.jump.desktop.world.WorldModel
 
 class Application {
     companion object {
-        private val logger = createLogger { "Application" } //日志器
         const val INIT_SCREEN_WIDTH = 800
         const val INIT_SCREEN_HEIGHT = 800
 
+        init {
+            Logger.printDebug = true
+            Logger.writeFile = false
+        }
+
+        private val logger = logger { "Application" } //日志器
         var running = true
         val window: Window = Window.builder() //窗口构建器
             .buildTitle("像素决斗")
@@ -42,9 +47,6 @@ class Application {
         lateinit var world: WorldModel
 
         fun setup() {
-            logger.info("setting logger")
-            Logger.printDebug = false
-            Logger.writeFile = true
             logger.info("initialize window system")
             windowSystem.init()
             logger.info("initialize renderer system")

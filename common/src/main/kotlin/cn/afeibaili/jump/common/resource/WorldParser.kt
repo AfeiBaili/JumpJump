@@ -6,7 +6,7 @@ import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.Blocks
-import cn.afeibaili.jump.common.util.createLogger
+import cn.afeibaili.jump.common.util.logger
 
 /**
  * # 地图解析器，解析字符串为地图信息
@@ -37,7 +37,7 @@ import cn.afeibaili.jump.common.util.createLogger
  */
 
 class WorldParser {
-    private val logger = createLogger { "WorldParser" }
+    private val logger = logger { "WorldParser" }
 
     /**
      * 解析地图内容，并转换为对象
