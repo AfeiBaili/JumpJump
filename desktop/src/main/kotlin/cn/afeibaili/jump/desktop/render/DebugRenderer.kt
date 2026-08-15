@@ -61,7 +61,7 @@ class DebugRenderer {
     }
 
     fun buildText() {
-        textRenderer.update(Text("FPS: ${Application.Companion.rendererSystem.fps()}", 10f, 10f))
+        textRenderer.update(Text("FPS: ${Application.rendererSystem.fps()}", 10f, 10f))
     }
 
     fun render() {
