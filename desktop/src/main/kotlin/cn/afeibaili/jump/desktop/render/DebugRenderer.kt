@@ -7,7 +7,7 @@ import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.layout.UnknownLayout
 import cn.afeibaili.gl.render.layout.shape.rectangle
-import cn.afeibaili.gl.render.layout.weigth.rowWeight
+import cn.afeibaili.gl.render.layout.weigth.columnWeight
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -26,11 +26,12 @@ class DebugRenderer {
     val font = FontManager.create(
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 32
     )
-    var textProgram: Program? = null
-    var rectProgram: Program? = null
-    var camera: Camera? = null
-    var textRenderer: TextRenderer? = null
-    var rectRenderer: RectangleRenderer? = null
+    lateinit var textProgram: Program
+    lateinit var rectProgram: Program
+    lateinit var textCamera: Camera
+    lateinit var rectCamera: Camera
+    lateinit var textRenderer: TextRenderer
+    lateinit var rectRenderer: RectangleRenderer
     val window get() = Application.Companion.window
 
     fun init() {
@@ -48,38 +49,40 @@ class DebugRenderer {
                 Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/rectangle.frag").readText()
             )
         )
-        textProgram!!.link()
-        rectProgram!!.link()
-        camera = Camera(textProgram!!)
-        camera!!.ortho(0f, window.width.toFloat(), 0f, window.height.toFloat(), -1f, 1f)
-        textRenderer = TextRenderer(font, textProgram!!, camera!!)
-        rectRenderer = RectangleRenderer(rectProgram!!, camera!!)
+        textProgram.link()
+        rectProgram.link()
+        textCamera = Camera(textProgram)
+        rectCamera = Camera(rectProgram)
+        textCamera.ortho(0f, window.width.toFloat(), 0f, window.height.toFloat(), -1f, 1f)
+        rectCamera.ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f)
+        textRenderer = TextRenderer(font, textProgram, textCamera)
+        rectRenderer = RectangleRenderer(rectProgram, rectCamera)
         initLayout()
     }
 
     fun buildText() {
-        textRenderer!!.update(Text("FPS: ${Application.Companion.rendererSystem.fps()}", 10f, 10f))
+        textRenderer.update(Text("FPS: ${Application.Companion.rendererSystem.fps()}", 10f, 10f))
     }
 
     fun render() {
         buildText()
-        textRenderer!!.render()
-        rectRenderer!!.render()
+        textRenderer.render()
+        rectRenderer.render()
     }
 
     fun initLayout() {
-        val rowWeight: UnknownLayout = Application.screen.rowWeight {
+        val rowWeight: UnknownLayout = Application.screen.columnWeight {
             rectangle().setWeight(1f).setting {
-                it.setOffsetX(0f).setOffsetY(5f)
+                it.setOffsetY(0f)
             }
-            rectangle().setWeight(1f).setting {
-                it.setOffsetX(0f).setOffsetY(5f)
+            rectangle().setWeight(2f).setting {
+                it.setOffsetY(20f)
             }
         }
 
         rowWeight.items.forEach { it ->
-            logger.debug("x = ${it.x}, y = ${it.y}, width = ${it.width}, height = ${it.height}")
-            rectRenderer!!.put(it.toString(), it.x, it.y, it.width, it.height)
+            logger.debug("x = ${it.absoluteY}, y = ${it.absoluteY}, width = ${it.width}, height = ${it.height}")
+            rectRenderer.put(it.toString(), it.absoluteX, it.absoluteY, it.width, it.height)
         }
     }
 }
