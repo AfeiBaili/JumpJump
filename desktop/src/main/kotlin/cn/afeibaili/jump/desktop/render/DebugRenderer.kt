@@ -77,7 +77,6 @@ class DebugRenderer {
 
         rowWeight.items.forEach { it ->
             println("x = ${it.x}, y = ${it.y}, width = ${it.width}, height = ${it.height}")
-
             rectRenderer!!.put(it.toString(), it.x, it.y, it.width, it.height)
         }
     }
