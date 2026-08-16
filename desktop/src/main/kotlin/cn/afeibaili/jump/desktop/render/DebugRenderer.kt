@@ -5,7 +5,8 @@ import cn.afeibaili.gl.font.Text
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.UnknownLayout
+import cn.afeibaili.gl.render.layout.Layout
+import cn.afeibaili.gl.render.layout.fixed.fixed
 import cn.afeibaili.gl.render.layout.shape.rectangle
 import cn.afeibaili.gl.render.layout.weigth.columnWeight
 import cn.afeibaili.gl.render.shader.Program
@@ -71,12 +72,18 @@ class DebugRenderer {
     }
 
     fun initLayout() {
-        val rowWeight: UnknownLayout = Application.screen.columnWeight {
-            rectangle().setWeight(1f).setting {
-                it.setOffsetY(0f)
+        val rowWeight: Layout = Application.screen.columnWeight {
+            rectangle().setting {
+                it.setWeight(1f)
             }
-            rectangle().setWeight(2f).setting {
-                it.setOffsetY(20f)
+            rectangle().setting {
+                it.setWeight(1f).setOffsetY(20f)
+            }
+        }
+
+        Application.screen.apply {
+            fixed {
+
             }
         }
 
