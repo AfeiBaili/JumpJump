@@ -5,14 +5,9 @@ import cn.afeibaili.gl.font.Text
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.Layout
-import cn.afeibaili.gl.render.layout.fixed.fixed
-import cn.afeibaili.gl.render.layout.shape.rectangle
-import cn.afeibaili.gl.render.layout.weigth.columnWeight
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
-import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 
 /**
@@ -23,7 +18,6 @@ import cn.afeibaili.jump.desktop.Application
  */
 
 class DebugRenderer {
-    private val logger = logger { "DebugRenderer" }
     val font = FontManager.create(
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 32
     )
@@ -58,7 +52,7 @@ class DebugRenderer {
         rectCamera.ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f)
         textRenderer = TextRenderer(font, textProgram, textCamera)
         rectRenderer = RectangleRenderer(rectProgram, rectCamera)
-        initLayout()
+
     }
 
     fun buildText() {
@@ -69,27 +63,5 @@ class DebugRenderer {
         buildText()
         textRenderer.render()
         rectRenderer.render()
-    }
-
-    fun initLayout() {
-        val rowWeight: Layout = Application.screen.columnWeight {
-            rectangle().setting {
-                it.setWeight(1f)
-            }
-            rectangle().setting {
-                it.setWeight(1f).setOffsetY(20f)
-            }
-        }
-
-        Application.screen.apply {
-            fixed {
-
-            }
-        }
-
-        rowWeight.items.forEach { it ->
-            logger.debug("x = ${it.absoluteY}, y = ${it.absoluteY}, width = ${it.width}, height = ${it.height}")
-            rectRenderer.put(it.toString(), it.absoluteX, it.absoluteY, it.width, it.height)
-        }
     }
 }
