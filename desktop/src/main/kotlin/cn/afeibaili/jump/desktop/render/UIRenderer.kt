@@ -3,9 +3,7 @@ package cn.afeibaili.jump.desktop.render
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.Setting
 import cn.afeibaili.gl.render.layout.align.block
-import cn.afeibaili.gl.render.layout.shape.rectangle
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -25,9 +23,7 @@ class UIRenderer {
     lateinit var layoutRenderer: LayoutRenderer
 
     fun layout() = Application.screen.layout {
-        block(setting = Setting().size(this)) {
-            rectangle(setting = Setting().size(400f, 400f), key = "")
-        }
+        block(setting = { it.size(this) }) {}
     }
 
     fun init() {
