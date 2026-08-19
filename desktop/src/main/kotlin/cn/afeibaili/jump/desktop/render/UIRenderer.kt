@@ -28,8 +28,8 @@ class UIRenderer {
     fun layout() = Application.screen.layout {
         block(setting = { it.size(this) }) {
             rectangle({
-                it.backgroundColor(Color.parse(1f, 0f, 0f))
-                    .size(100f, 100f).align(AlignmentType.CENTER)
+                it.backgroundColor(Color.parse("ff00ff"))
+                    .size(400f, 400f).align(AlignmentType.CENTER)
             }, "rect1")
         }
     }
