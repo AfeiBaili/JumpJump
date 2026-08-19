@@ -1,9 +1,12 @@
 package cn.afeibaili.jump.desktop.render
 
+import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.camera.Camera
+import cn.afeibaili.gl.render.layout.align.AlignmentType
 import cn.afeibaili.gl.render.layout.align.block
+import cn.afeibaili.gl.render.layout.shape.rectangle
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -23,7 +26,12 @@ class UIRenderer {
     lateinit var layoutRenderer: LayoutRenderer
 
     fun layout() = Application.screen.layout {
-        block(setting = { it.size(this) }) {}
+        block(setting = { it.size(this) }) {
+            rectangle({
+                it.backgroundColor(Color.parse(1f, 0f, 0f))
+                    .size(100f, 100f).align(AlignmentType.CENTER)
+            }, "rect1")
+        }
     }
 
     fun init() {
