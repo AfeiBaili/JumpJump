@@ -21,6 +21,8 @@ class WindowSystem(val window: Window = Application.window) {
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
             Application.rendererSystem.debugRenderer.textCamera
                 .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
+            Application.rendererSystem.uiRenderer.camera
+                .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
             Application.screen.update(w.toFloat(), h.toFloat())
         }
 

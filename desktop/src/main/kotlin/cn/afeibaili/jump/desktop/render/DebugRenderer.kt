@@ -2,7 +2,6 @@ package cn.afeibaili.jump.desktop.render
 
 import cn.afeibaili.gl.font.FontManager
 import cn.afeibaili.gl.font.Text
-import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
@@ -22,11 +21,8 @@ class DebugRenderer {
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 32
     )
     lateinit var textProgram: Program
-    lateinit var rectProgram: Program
     lateinit var textCamera: Camera
-    lateinit var rectCamera: Camera
     lateinit var textRenderer: TextRenderer
-    lateinit var rectRenderer: RectangleRenderer
     val window get() = Application.Companion.window
 
     fun init() {
@@ -37,21 +33,10 @@ class DebugRenderer {
                 Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/text.frag").readText()
             )
         )
-        rectProgram = Program.Companion.create(
-            Shader.Companion.create(
-                Shader.ShaderType.VERTEX, ResourceFileGetter.getResourceFile("shader/rectangle.vert").readText()
-            ), Shader.Companion.create(
-                Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/rectangle.frag").readText()
-            )
-        )
         textProgram.link()
-        rectProgram.link()
         textCamera = Camera(textProgram)
-        rectCamera = Camera(rectProgram)
         textCamera.ortho(0f, window.width.toFloat(), 0f, window.height.toFloat(), -1f, 1f)
-        rectCamera.ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f)
         textRenderer = TextRenderer(font, textProgram, textCamera)
-        rectRenderer = RectangleRenderer(rectProgram, rectCamera)
 
     }
 
@@ -62,6 +47,5 @@ class DebugRenderer {
     fun render() {
         buildText()
         textRenderer.render()
-        rectRenderer.render()
     }
 }

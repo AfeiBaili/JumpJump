@@ -24,6 +24,7 @@ class UIRenderer {
     private val logger = logger { "UIRenderer" }
     private val window get() = Application.window
     lateinit var layoutRenderer: LayoutRenderer
+    lateinit var camera: Camera
 
     fun layout() = Application.screen.layout {
         block(setting = { it.size(this) }) {
@@ -44,7 +45,7 @@ class UIRenderer {
             Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/rectangle.frag").readText()
         )
         val program: Program = Program.create(vertexShader, fragmentShader).apply { link() }
-        val camera = Camera(program).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
+        camera = Camera(program).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
         layoutRenderer = LayoutRenderer(RectangleRenderer(program, camera), Application.screen)
         layoutRenderer.update()
     }
