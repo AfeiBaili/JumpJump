@@ -30,17 +30,17 @@ class UIRenderer {
 
     fun layout() = Application.screen.layout {
         block(setting = { it.maxSize() }) {
-            rectangle({ it: AlignmentSetting ->
-                it.backgroundColor(color = Color(255u, 255u, 255u, 20u))
-                    .size(200f,200f)
-            }, "rect1")
-
             rowWeight(setting = { it.size(400f, 400f) }) {
                 rectangle({ it: WeightSetting ->
                     it.backgroundColor(color = Color(255u, 255u, 255u, 100u))
                         .weight(1f)
                 }, "rect2")
             }
+
+            rectangle({ it: AlignmentSetting ->
+                it.backgroundColor(color = Color(255u, 255u, 255u, 20u))
+                    .size(200f, 200f)
+            }, "rect1")
         }
     }
 
