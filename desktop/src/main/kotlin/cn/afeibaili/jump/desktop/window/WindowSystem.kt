@@ -22,7 +22,7 @@ class WindowSystem(val window: Window = Application.window) {
             Application.rendererSystem.debugRenderer.textCamera // 文本摄像机
                 .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
             Application.rendererSystem.uiRenderer.camera // ui摄像机
-                .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
+                .ortho(0f, w.toFloat(), h.toFloat(), 0f, -1f, 1f)
             Application.screen.update(w.toFloat(), h.toFloat()) //屏幕大小更新
             Application.rendererSystem.uiRenderer.update() // ui数据更新
         }

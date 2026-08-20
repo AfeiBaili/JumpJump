@@ -5,6 +5,7 @@ import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.layout.align.AlignmentSetting
+import cn.afeibaili.gl.render.layout.align.AlignmentType
 import cn.afeibaili.gl.render.layout.align.block
 import cn.afeibaili.gl.render.layout.shape.rectangle
 import cn.afeibaili.gl.render.layout.weigth.WeightSetting
@@ -30,17 +31,12 @@ class UIRenderer {
 
     fun layout() = Application.screen.layout {
         block(setting = { it.maxSize() }) {
-            rowWeight(setting = { it.size(400f, 400f) }) {
+            rowWeight(setting = { it: AlignmentSetting -> it.size(400f, 400f).align(AlignmentType.TOP_CENTER) }) {
                 rectangle({ it: WeightSetting ->
                     it.backgroundColor(color = Color(255u, 255u, 255u, 100u))
                         .weight(1f)
                 }, "rect2")
             }
-
-            rectangle({ it: AlignmentSetting ->
-                it.backgroundColor(color = Color(255u, 255u, 255u, 20u))
-                    .size(200f, 200f)
-            }, "rect1")
         }
     }
 
