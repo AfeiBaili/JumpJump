@@ -17,13 +17,14 @@ class WindowSystem(val window: Window = Application.window) {
             val h = if (h == 0) 1 else h
             val aspect = w.toFloat() / h.toFloat()
             window.setViewport(w, h)
-            Application.rendererSystem.worldRenderer.camera
+            Application.rendererSystem.worldRenderer.camera // 世界摄像机
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
-            Application.rendererSystem.debugRenderer.textCamera
+            Application.rendererSystem.debugRenderer.textCamera // 文本摄像机
                 .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
-            Application.rendererSystem.uiRenderer.camera
+            Application.rendererSystem.uiRenderer.camera // ui摄像机
                 .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
-            Application.screen.update(w.toFloat(), h.toFloat())
+            Application.screen.update(w.toFloat(), h.toFloat()) //屏幕大小更新
+            Application.rendererSystem.uiRenderer.update() // ui数据更新
         }
 
         GLFW.glfwSetWindowCloseCallback(window.windowLocation) {

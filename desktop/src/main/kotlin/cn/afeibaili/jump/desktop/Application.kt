@@ -2,7 +2,7 @@ package cn.afeibaili.jump.desktop
 
 import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
-import cn.afeibaili.gl.render.layout.ScreenLayout
+import cn.afeibaili.gl.render.layout.RootLayout
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.common.world.WorldManager
 import cn.afeibaili.jump.desktop.entity.Player
@@ -39,7 +39,7 @@ class Application {
             .withClearColor(0.1f, 0.1f, 0.1f, 1f)
             .build()
         val windowSystem = WindowSystem(window) //窗口管理器
-        val screen = ScreenLayout(INIT_SCREEN_WIDTH.toFloat(), INIT_SCREEN_HEIGHT.toFloat())
+        val screen = RootLayout(INIT_SCREEN_WIDTH.toFloat(), INIT_SCREEN_HEIGHT.toFloat())
         val rendererSystem = RendererSystem() //渲染系统
         val logicThread = LogicThread()
         val camera get() = rendererSystem.worldRenderer.camera

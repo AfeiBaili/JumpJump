@@ -4,9 +4,11 @@ import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.align.AlignmentType
+import cn.afeibaili.gl.render.layout.align.AlignmentSetting
 import cn.afeibaili.gl.render.layout.align.block
 import cn.afeibaili.gl.render.layout.shape.rectangle
+import cn.afeibaili.gl.render.layout.weigth.WeightSetting
+import cn.afeibaili.gl.render.layout.weigth.rowWeight
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -27,11 +29,18 @@ class UIRenderer {
     lateinit var camera: Camera
 
     fun layout() = Application.screen.layout {
-        block(setting = { it.size(this) }) {
-            rectangle({
-                it.backgroundColor(Color.parse("ff00ff"))
-                    .size(400f, 400f).align(AlignmentType.CENTER)
+        block(setting = { it.maxSize() }) {
+            rectangle({ it: AlignmentSetting ->
+                it.backgroundColor(color = Color(255u, 255u, 255u, 20u))
+                    .size(200f,200f)
             }, "rect1")
+
+            rowWeight(setting = { it.size(400f, 400f) }) {
+                rectangle({ it: WeightSetting ->
+                    it.backgroundColor(color = Color(255u, 255u, 255u, 100u))
+                        .weight(1f)
+                }, "rect2")
+            }
         }
     }
 
@@ -47,6 +56,10 @@ class UIRenderer {
         val program: Program = Program.create(vertexShader, fragmentShader).apply { link() }
         camera = Camera(program).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
         layoutRenderer = LayoutRenderer(RectangleRenderer(program, camera), Application.screen)
+        layoutRenderer.init()
+    }
+
+    fun update() {
         layoutRenderer.update()
     }
 
