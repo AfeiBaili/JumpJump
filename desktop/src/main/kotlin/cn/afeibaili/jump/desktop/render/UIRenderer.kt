@@ -31,7 +31,10 @@ class UIRenderer {
 
     fun layout() = Application.screen.layout {
         block(setting = { it.maxSize() }) {
-            rowWeight(setting = { it: AlignmentSetting -> it.size(400f, 400f).align(AlignmentType.TOP_CENTER) }) {
+            rowWeight(setting = { it: AlignmentSetting ->
+                it.size(400f, 400f).align(AlignmentType.TOP_CENTER)
+                    .backgroundColor(Color.parse("#FFAF1A80"))
+            }) {
                 rectangle({ it: WeightSetting ->
                     it.backgroundColor(color = Color(255u, 255u, 255u, 100u))
                         .weight(1f)
@@ -51,7 +54,7 @@ class UIRenderer {
         )
         val program: Program = Program.create(vertexShader, fragmentShader).apply { link() }
         camera = Camera(program).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
-        layoutRenderer = LayoutRenderer(RectangleRenderer(program, camera), Application.screen)
+        layoutRenderer = LayoutRenderer(RectangleRenderer(program, camera), Application.screen, true)
         layoutRenderer.init()
     }
 
