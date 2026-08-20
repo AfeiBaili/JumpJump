@@ -1,6 +1,6 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.gl.font.FontManager
+import cn.afeibaili.gl.font.FontFactory
 import cn.afeibaili.gl.font.Text
 import cn.afeibaili.gl.render.TextRenderer
 import cn.afeibaili.gl.render.camera.Camera
@@ -17,7 +17,7 @@ import cn.afeibaili.jump.desktop.Application
  */
 
 class DebugRenderer {
-    val font = FontManager.create(
+    val font = FontFactory.create(
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 32
     )
     lateinit var textProgram: Program
@@ -41,7 +41,7 @@ class DebugRenderer {
     }
 
     fun buildText() {
-        textRenderer.update(Text("FPS: ${Application.rendererSystem.fps()}", 10f, 10f))
+        textRenderer.update(Text("debug.fps", "FPS: ${Application.rendererSystem.fps()}", 10f, 10f, 1f))
     }
 
     fun render() {
