@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.desktop.window
 
 import cn.afeibaili.gl.Window
+import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.jump.desktop.Application
 import org.lwjgl.glfw.GLFW
 
@@ -19,10 +20,11 @@ class WindowSystem(val window: Window = Application.window) {
             window.setViewport(w, h)
             Application.rendererSystem.worldRenderer.camera // 世界摄像机
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
-            Application.rendererSystem.debugRenderer.textCamera // 文本摄像机
-                .ortho(0f, w.toFloat(), 0f, h.toFloat(), -1f, 1f)
-            Application.rendererSystem.uiRenderer.camera // ui摄像机
-                .ortho(0f, w.toFloat(), h.toFloat(), 0f, -1f, 1f)
+
+            setWidthHeightOrtho(Application.rendererSystem.debugRenderer.textCamera, 0f, w.toFloat(), 0f, h.toFloat())
+            setWidthHeightOrtho(Application.rendererSystem.uiRenderer.rectCamera, 0f, w.toFloat(), h.toFloat(), 0f)
+            setWidthHeightOrtho(Application.rendererSystem.uiRenderer.textCamera, 0f, w.toFloat(), h.toFloat(), 0f)
+
             Application.screen.update(w.toFloat(), h.toFloat()) //屏幕大小更新
             Application.rendererSystem.uiRenderer.update() // ui数据更新
         }
@@ -30,5 +32,9 @@ class WindowSystem(val window: Window = Application.window) {
         GLFW.glfwSetWindowCloseCallback(window.windowLocation) {
             Application.stop()
         }
+    }
+
+    private fun setWidthHeightOrtho(camera: Camera, left: Float, right: Float, bottom: Float, top: Float) {
+        camera.ortho(left, right, bottom, top, -1f, 0f)
     }
 }
