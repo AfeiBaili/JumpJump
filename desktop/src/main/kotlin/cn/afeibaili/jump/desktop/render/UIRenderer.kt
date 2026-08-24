@@ -6,6 +6,7 @@ import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextLayoutRenderer
 import cn.afeibaili.gl.render.camera.Camera
+import cn.afeibaili.gl.render.layout.adapt.rowAdapt
 import cn.afeibaili.gl.render.layout.align.block
 import cn.afeibaili.gl.render.layout.text.TextUpdater
 import cn.afeibaili.gl.render.layout.text.text
@@ -30,21 +31,32 @@ class UIRenderer {
     lateinit var textCamera: Camera
 
     val font = FontFactory.create(
-        "source", ResourceFileGetter.getResourceFile("font/AnggaranDasar-PKqDB.ttf").canonicalPath, 64
+        "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 64
     ).apply { texture.upload() }
     val textUpdater = TextUpdater()
 
     fun layout() = Application.screen.layout {
         block(setting = { it.maxSize() }) {
-            text(
-                "debug.fps",
-                "FPS: ${Application.rendererSystem.fps()}",
-                font,
-                updater = textUpdater,
-                scale = 1f,
-                color = Color.WHITE,
-                backgroundColor = Color.RED,
-            )
+            rowAdapt {
+                text(
+                    "debug.fps",
+                    "FPS: ${Application.rendererSystem.fps()}",
+                    font,
+                    updater = textUpdater,
+                    scale = 2f,
+                    color = Color.parse("#55BA9B80"),
+                    backgroundColor = Color.WHITE
+                )
+                text(
+                    "debug.text",
+                    "text.Test.string",
+                    font,
+                    updater = textUpdater,
+                    scale = 1f,
+                    color = Color.parse("#55BA9B80"),
+                    backgroundColor = Color.WHITE
+                )
+            }
         }
     }
 
