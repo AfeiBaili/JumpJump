@@ -1,15 +1,15 @@
 package cn.afeibaili.jump.desktop.render
 
+import cn.afeibaili.gl.font.FontFactory
 import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
+import cn.afeibaili.gl.render.TextLayoutRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.align.AlignmentSetting
-import cn.afeibaili.gl.render.layout.align.AlignmentType
+import cn.afeibaili.gl.render.layout.adapt.rowAdapt
 import cn.afeibaili.gl.render.layout.align.block
-import cn.afeibaili.gl.render.layout.shape.rectangle
-import cn.afeibaili.gl.render.layout.weigth.WeightSetting
-import cn.afeibaili.gl.render.layout.weigth.rowWeight
+import cn.afeibaili.gl.render.layout.text.TextUpdater
+import cn.afeibaili.gl.render.layout.text.text
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -27,18 +27,35 @@ class UIRenderer {
     private val logger = logger { "UIRenderer" }
     private val window get() = Application.window
     lateinit var layoutRenderer: LayoutRenderer
-    lateinit var camera: Camera
+    lateinit var rectCamera: Camera
+    lateinit var textCamera: Camera
+
+    val font = FontFactory.create(
+        "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 64
+    ).apply { texture.upload() }
+    val textUpdater = TextUpdater()
 
     fun layout() = Application.screen.layout {
         block(setting = { it.maxSize() }) {
-            rowWeight(setting = { it: AlignmentSetting ->
-                it.size(400f, 400f).align(AlignmentType.TOP_CENTER)
-                    .backgroundColor(Color.parse("#FFAF1A80"))
-            }) {
-                rectangle({ it: WeightSetting ->
-                    it.backgroundColor(color = Color(255u, 255u, 255u, 100u))
-                        .weight(1f)
-                }, "rect2")
+            rowAdapt {
+                text(
+                    "debug.fps",
+                    "FPS: ${Application.rendererSystem.fps()}",
+                    font,
+                    updater = textUpdater,
+                    scale = 2f,
+                    color = Color.parse("#55BA9B80"),
+                    backgroundColor = Color.WHITE
+                )
+                text(
+                    "debug.text",
+                    "text.Test.string",
+                    font,
+                    updater = textUpdater,
+                    scale = 1f,
+                    color = Color.parse("#55BA9B80"),
+                    backgroundColor = Color.WHITE
+                )
             }
         }
     }
@@ -46,15 +63,31 @@ class UIRenderer {
     fun init() {
         layout()
         logger.info("loaded layout")
-        val vertexShader = Shader.create(
-            Shader.ShaderType.VERTEX, ResourceFileGetter.getResourceFile("shader/rectangle.vert").readText()
+        // RECT ////
+        val rectVertexShader = Shader.create(
+            Shader.ShaderType.VERTEX, ResourceFileGetter.getResourceFile("shader/layout/rectangle.vert").readText()
         )
-        val fragmentShader = Shader.create(
-            Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/rectangle.frag").readText()
+        val rectFragmentShader = Shader.create(
+            Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/layout/rectangle.frag").readText()
         )
-        val program: Program = Program.create(vertexShader, fragmentShader).apply { link() }
-        camera = Camera(program).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
-        layoutRenderer = LayoutRenderer(RectangleRenderer(program, camera), Application.screen, true)
+        val rectProgram: Program = Program.create(rectVertexShader, rectFragmentShader).apply { link() }
+        rectCamera =
+            Camera(rectProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
+        val rectangleRenderer = RectangleRenderer(rectProgram, rectCamera)
+
+        // TEXT ////
+        val textVertexShader = Shader.create(
+            Shader.ShaderType.VERTEX, ResourceFileGetter.getResourceFile("shader/layout/text.vert").readText()
+        )
+        val textFragmentShader = Shader.create(
+            Shader.ShaderType.FRAGMENT, ResourceFileGetter.getResourceFile("shader/layout/text.frag").readText()
+        )
+        val textProgram: Program = Program.create(textVertexShader, textFragmentShader).apply { link() }
+        textCamera =
+            Camera(textProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
+        val textRenderer = TextLayoutRenderer(textProgram, textCamera)
+
+        layoutRenderer = LayoutRenderer(textRenderer, rectangleRenderer, Application.screen)
         layoutRenderer.init()
     }
 
@@ -62,7 +95,12 @@ class UIRenderer {
         layoutRenderer.update()
     }
 
+    fun updateText() {
+        textUpdater.update("debug.fps", "FPS: ${Application.rendererSystem.fps()}")
+    }
+
     fun render() {
+        updateText()
         layoutRenderer.render()
     }
 }
