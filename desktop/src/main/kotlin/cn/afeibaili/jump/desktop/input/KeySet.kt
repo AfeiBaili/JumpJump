@@ -12,6 +12,8 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
  *
  * 已自动装载至KeySet.all集合中，无需手动装载
  *
+ * 支持开启和关闭，使用`onKey()`和`offKey()`开启和关闭
+ *
  * ## 使用
  *
  * 创建`KeySet(identifier)`对象并使用绑定方法，进行按键绑定
@@ -75,6 +77,5 @@ data class KeySet(val identifier: Identifier) : TickHandler {
 
     fun offKey() {
         keyable = false
-
     }
 }
