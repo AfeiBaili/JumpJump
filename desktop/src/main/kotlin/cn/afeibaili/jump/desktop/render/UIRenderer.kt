@@ -44,17 +44,17 @@ class UIRenderer {
                     font,
                     updater = textUpdater,
                     scale = 2f,
-                    color = Color.parse("#55BA9B80"),
-                    backgroundColor = Color.WHITE
+                    color = Color.WHITE,
+                    backgroundColor = Color.parse("#2B2D3080")
                 )
                 text(
-                    "debug.text",
-                    "text.Test.string",
+                    "debug.test",
+                    "hello freetype",
                     font,
                     updater = textUpdater,
-                    scale = 1f,
-                    color = Color.parse("#55BA9B80"),
-                    backgroundColor = Color.WHITE
+                    scale = 0.5f,
+                    color = Color.WHITE,
+                    backgroundColor = Color.parse("#2B2D3080")
                 )
             }
         }
