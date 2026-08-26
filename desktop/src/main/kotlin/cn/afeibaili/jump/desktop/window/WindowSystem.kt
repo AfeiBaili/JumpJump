@@ -37,7 +37,7 @@ class WindowSystem(val window: Window = Application.window) {
             Application.rendererSystem.worldRenderer.camera // 世界摄像机
                 .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
 
-            setWidthHeightOrtho(Application.rendererSystem.debugRenderer.textCamera, 0f, w.toFloat(), 0f, h.toFloat())
+            // setWidthHeightOrtho(Application.rendererSystem.debugRenderer.textCamera, 0f, w.toFloat(), 0f, h.toFloat())
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.rectCamera, 0f, w.toFloat(), h.toFloat(), 0f)
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.textCamera, 0f, w.toFloat(), h.toFloat(), 0f)
 
