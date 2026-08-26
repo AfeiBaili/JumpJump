@@ -1,8 +1,11 @@
 package cn.afeibaili.jump.desktop.window
 
 import cn.afeibaili.gl.Window
+import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.render.camera.Camera
+import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.input.KeySet
 import org.lwjgl.glfw.GLFW
 
 /**
@@ -13,7 +16,20 @@ import org.lwjgl.glfw.GLFW
  */
 
 class WindowSystem(val window: Window = Application.window) {
+    val keySet = KeySet("system" identifier "window")
+
+    fun loadKeyBind() {
+        keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
+            keyClick {
+                window.vsync = !window.vsync
+            }
+        }
+    }
+
     fun init() {
+        loadKeyBind()
+        keySet.onKey()
+
         GLFW.glfwSetWindowSizeCallback(window.windowLocation) { _, w, h ->
             val h = if (h == 0) 1 else h
             val aspect = w.toFloat() / h.toFloat()

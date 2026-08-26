@@ -24,6 +24,17 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
  * }
  * ```
  *
+ * ## 开启
+ *
+ * 使用`keySet.onKey()`方法开启按键监听，否则无法监听
+ *
+ * ```
+ * val keySet = KeySet("system" identifier "window")
+ * init {
+ *     keySet.onKey()
+ * }
+ * ```
+ *
  * @author AfeiBaili
  * @version 2026/6/27 19:53
  */

@@ -71,7 +71,7 @@ class Application {
             world = loadWorld("test world")
             setup()
             logicThread.start()
-            window.frame({ running }) {
+            window.loopFrame({ running }) {
                 rendererSystem.frame()
             }
             logicThread.thread.join()
