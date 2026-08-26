@@ -1,20 +1,15 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.gl.font.FontFactory
-import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextLayoutRenderer
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.gl.render.layout.adapt.rowAdapt
-import cn.afeibaili.gl.render.layout.align.block
-import cn.afeibaili.gl.render.layout.text.TextUpdater
-import cn.afeibaili.gl.render.layout.text.text
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.render.layout.Layout
 
 /**
  * # 界面渲染器
@@ -29,39 +24,10 @@ class UIRenderer {
     lateinit var layoutRenderer: LayoutRenderer
     lateinit var rectCamera: Camera
     lateinit var textCamera: Camera
-
-    val font = FontFactory.create(
-        "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 64
-    ).apply { texture.upload() }
-    val textUpdater = TextUpdater()
-
-    fun layout() = Application.screen.layout {
-        block(setting = { it.maxSize() }) {
-            rowAdapt {
-                text(
-                    "debug.fps",
-                    "FPS: ${Application.rendererSystem.fps()}",
-                    font,
-                    updater = textUpdater,
-                    scale = 2f,
-                    color = Color.WHITE,
-                    backgroundColor = Color.parse("#2B2D3080")
-                )
-                text(
-                    "debug.test",
-                    "hello freetype",
-                    font,
-                    updater = textUpdater,
-                    scale = 0.5f,
-                    color = Color.WHITE,
-                    backgroundColor = Color.parse("#2B2D3080")
-                )
-            }
-        }
-    }
+    var layout: Layout = Layout()
 
     fun init() {
-        layout()
+        layout.layout()
         logger.info("loaded layout")
         // RECT ////
         val rectVertexShader = Shader.create(
@@ -95,12 +61,8 @@ class UIRenderer {
         layoutRenderer.update()
     }
 
-    fun updateText() {
-        textUpdater.update("debug.fps", "FPS: ${Application.rendererSystem.fps()}")
-    }
-
     fun render() {
-        updateText()
+        layout.updateText()
         layoutRenderer.render()
     }
 }
