@@ -1,12 +1,12 @@
 package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.Identifier
-import cn.afeibaili.jump.common.exception.IdentifierException
-import cn.afeibaili.jump.common.exception.KeyException
-import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.Blocks
+import cn.afeibaili.jump.common.exception.IdentifierException
+import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.util.logger
+import cn.afeibaili.jump.common.world.World
 
 /**
  * # 地图解析器，解析字符串为地图信息

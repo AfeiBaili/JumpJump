@@ -1,11 +1,8 @@
 package cn.afeibaili.jump.desktop.window
 
 import cn.afeibaili.gl.Window
-import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.render.camera.Camera
-import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.desktop.Application
-import cn.afeibaili.jump.desktop.input.KeySet
 import org.lwjgl.glfw.GLFW
 
 /**
@@ -16,28 +13,28 @@ import org.lwjgl.glfw.GLFW
  */
 
 class WindowSystem(val window: Window = Application.window) {
-    val keySet = KeySet("key" identifier "window")
-    var cursorX: Double = 0.0
-    var cursorY: Double = 0.0
-
-    fun loadKeyBind() {
-        keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
-            keyClick {
-                window.vsync = !window.vsync
-            }
-        }
-    }
+    var cursorX: Int = 0
+    var cursorY: Int = 0
+    var aspect = Application.screenWidth.toFloat() / Application.screenHeight.toFloat()
 
     fun init() {
-        loadKeyBind()
-        keySet.onKey()
 
         GLFW.glfwSetWindowSizeCallback(window.windowLocation) { _, w, h ->
+            Application.screenWidth = w
+            Application.screenHeight = h
             val h = if (h == 0) 1 else h
-            val aspect = w.toFloat() / h.toFloat()
+            aspect = w.toFloat() / h.toFloat()
             window.setViewport(w, h)
-            Application.rendererSystem.worldRenderer.camera // 世界摄像机
-                .ortho(-5f * aspect, 5f * aspect, -5f, 5f, -1f, 1f)
+            val worldCamera = Application.camera
+            worldCamera// 世界摄像机
+                .ortho(
+                    0f,
+                    worldCamera.zoom * aspect,
+                    0f,
+                    worldCamera.zoom,
+                    -1f,
+                    1f
+                )
 
             // setWidthHeightOrtho(Application.rendererSystem.debugRenderer.textCamera, 0f, w.toFloat(), 0f, h.toFloat())
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.rectCamera, 0f, w.toFloat(), h.toFloat(), 0f)
@@ -48,8 +45,8 @@ class WindowSystem(val window: Window = Application.window) {
         }
 
         GLFW.glfwSetCursorPosCallback(window.windowLocation) { _, x, y ->
-            cursorX = x
-            cursorY = y
+            cursorX = x.toInt()
+            cursorY = y.toInt()
         }
 
         GLFW.glfwSetWindowCloseCallback(window.windowLocation) {

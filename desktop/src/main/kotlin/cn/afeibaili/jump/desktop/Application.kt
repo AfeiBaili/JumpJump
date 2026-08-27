@@ -9,6 +9,7 @@ import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.render.RendererSystem
 import cn.afeibaili.jump.desktop.window.WindowSystem
+import cn.afeibaili.jump.desktop.world.WorldEditor
 import cn.afeibaili.jump.desktop.world.WorldModel
 
 
@@ -21,8 +22,8 @@ import cn.afeibaili.jump.desktop.world.WorldModel
 
 class Application {
     companion object {
-        const val INIT_SCREEN_WIDTH = 800
-        const val INIT_SCREEN_HEIGHT = 800
+        var screenWidth = 800
+        var screenHeight = 800
 
         init {
             Logger.printDebug = true
@@ -33,17 +34,18 @@ class Application {
         var running = true
         val window: Window = Window.builder() //窗口构建器
             .buildTitle("像素决斗")
-            .buildWidth(INIT_SCREEN_WIDTH)
-            .buildHeight(INIT_SCREEN_HEIGHT)
+            .buildWidth(screenWidth)
+            .buildHeight(screenHeight)
             .withVerticalSync(false)
             .withClearColor(0.1f, 0.1f, 0.1f, 1f)
             .build()
         val windowSystem = WindowSystem(window) //窗口管理器
-        val screen = RootLayout(INIT_SCREEN_WIDTH.toFloat(), INIT_SCREEN_HEIGHT.toFloat())
+        val screen = RootLayout(screenWidth.toFloat(), screenHeight.toFloat())
         val rendererSystem = RendererSystem() //渲染系统
         val logicThread = LogicThread()
         val camera get() = rendererSystem.worldRenderer.camera
         val player get() = Player.self
+        val worldEditor = WorldEditor()
         lateinit var world: WorldModel
 
         fun setup() {

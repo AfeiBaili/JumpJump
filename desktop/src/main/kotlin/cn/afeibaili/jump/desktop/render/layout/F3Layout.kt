@@ -13,6 +13,7 @@ import cn.afeibaili.gl.render.layout.text.text
 import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.input.KeySet
 import org.lwjgl.glfw.GLFW
 
@@ -27,8 +28,9 @@ class F3Layout {
         "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 64
     ).apply { texture.upload() }
     val textUpdater = TextUpdater()
-    val window = Application.window
-    val windowSystem = Application.windowSystem
+    val window get() = Application.window
+    val windowSystem get() = Application.windowSystem
+    val worldEditor get() = Application.worldEditor
     val textBackgroundColor = Color.parse("#2B2D3080")
     val keySet = KeySet("key" identifier "f3")
     val scale = 0.4f
@@ -41,6 +43,11 @@ class F3Layout {
     }
 
     private fun loadKey() {
+        keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
+            keyClick {
+                window.vsync = !window.vsync
+            }
+        }
         keySet.bind(Key("open_f3", GLFW.GLFW_KEY_F3)) {
             keyClick {
                 f3.showable = !f3.showable
@@ -68,6 +75,14 @@ class F3Layout {
                     "f3.cursor.position", "init cursor", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
+                text(
+                    "f3.cursor.block", "init cursor block", font, updater = textUpdater, scale = scale,
+                    backgroundColor = textBackgroundColor,
+                )
+                text(
+                    "f3.player.position", "init player position", font, updater = textUpdater, scale = scale,
+                    backgroundColor = textBackgroundColor,
+                )
             }
         }
     }
@@ -75,6 +90,11 @@ class F3Layout {
     fun updateText() {
         textUpdater.update("f3.fps", "fps: ${Application.rendererSystem.fps()}")
         textUpdater.update("f3.v-sync", "v-sync: ${window.vsync}")
-        textUpdater.update("f3.cursor.position", "cursor: [x:${windowSystem.cursorX}, y:${windowSystem.cursorY}]")
+        textUpdater.update(
+            "f3.cursor.position",
+            "position: {cursor: [x:${windowSystem.cursorX}, y:${windowSystem.cursorY}], block: [x:${worldEditor.blockPositionX}, y:${worldEditor.blockPositionY}]}"
+        )
+        textUpdater.update("f3.cursor.block", "block: ${worldEditor.currentCursorBlock}")
+        textUpdater.update("f3.player.position", "player: [x:${Player.self.x}, y:${Player.self.y}]")
     }
 }

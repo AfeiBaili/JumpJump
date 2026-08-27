@@ -19,4 +19,13 @@ class World(val name: String, val blocks: List<List<Block>>) {
             }
         }
     }
+
+    fun getBlockAt(x: Int, y: Int): Block? {
+        if (x < 0 || y < 0) return null
+        val blockRow: Int = blocks.size
+        if (y >= blockRow) return null
+        val blockCol: Int = blocks[y].size
+        if (x >= blockCol) return null
+        return blocks[y][x]
+    }
 }

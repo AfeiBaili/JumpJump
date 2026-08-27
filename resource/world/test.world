@@ -4,10 +4,9 @@ D = dirt
 G = grass_dirt
 g = grass
 h = grass_tall
-e = error
 ghh     hhgg
 GGG     GGGG
-DD e  g DDDD
+DD    g DDDD
      GGGDDDD
 hg   DDDDDDD
 GG     DDDDD
