@@ -16,7 +16,7 @@ import org.lwjgl.glfw.GLFW
  */
 
 class WindowSystem(val window: Window = Application.window) {
-    val keySet = KeySet("system" identifier "window")
+    val keySet = KeySet("key" identifier "window")
 
     fun loadKeyBind() {
         keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {

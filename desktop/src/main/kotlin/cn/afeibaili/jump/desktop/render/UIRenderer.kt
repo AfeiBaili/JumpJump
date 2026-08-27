@@ -9,7 +9,7 @@ import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
-import cn.afeibaili.jump.desktop.render.layout.Layout
+import cn.afeibaili.jump.desktop.render.layout.F3Layout
 
 /**
  * # 界面渲染器
@@ -24,10 +24,10 @@ class UIRenderer {
     lateinit var layoutRenderer: LayoutRenderer
     lateinit var rectCamera: Camera
     lateinit var textCamera: Camera
-    var layout: Layout = Layout()
+    var f3Layout: F3Layout = F3Layout()
 
     fun init() {
-        layout.layout()
+        f3Layout.load()
         logger.info("loaded layout")
         // RECT ////
         val rectVertexShader = Shader.create(
@@ -62,7 +62,7 @@ class UIRenderer {
     }
 
     fun render() {
-        layout.updateText()
+        f3Layout.updateText()
         layoutRenderer.render()
     }
 }
