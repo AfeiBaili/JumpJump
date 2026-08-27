@@ -29,7 +29,7 @@ class Layout {
         block(setting = { it.maxSize() }) {
             rowAdapt(setting = { it: AlignmentSetting -> it.align(AlignmentType.LEFT_TOP) }) {
                 text(
-                    "debug.greet", "enter f3 open debug", font, updater = textUpdater, scale = 0.5f, x = 10f, y = 10f,
+                    "debug.greet", "press f3 open debug", font, updater = textUpdater, scale = 0.5f, x = 10f, y = 10f,
                     backgroundColor = textBackgroundColor,
                 )
                 text(
