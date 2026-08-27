@@ -28,9 +28,10 @@ class F3Layout {
     ).apply { texture.upload() }
     val textUpdater = TextUpdater()
     val window = Application.window
+    val windowSystem = Application.windowSystem
     val textBackgroundColor = Color.parse("#2B2D3080")
     val keySet = KeySet("key" identifier "f3")
-
+    val scale = 0.4f
     lateinit var f3: Layout
 
     fun load() {
@@ -50,17 +51,21 @@ class F3Layout {
 
     private fun layout() = Application.screen.layout {
         f3 = block(setting = { it.maxSize() }) {
-            rowAdapt(setting = { it: AlignmentSetting -> it.align(AlignmentType.LEFT_TOP) }) {
+            rowAdapt(setting = { it: AlignmentSetting -> it.align(AlignmentType.LEFT_TOP).offsetX(10f).offsetY(10f) }) {
                 text(
-                    "debug.greet", "press f3 open debug", font, updater = textUpdater, scale = 0.5f, x = 10f, y = 10f,
+                    "f3.greet", "press f3 open debug", font, updater = textUpdater, scale = scale,
+                    backgroundColor = textBackgroundColor
+                )
+                text(
+                    "f3.fps", "init fps", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
                 text(
-                    "debug.fps", "init fps", font, updater = textUpdater, scale = 0.5f, x = 10f, y = 10f,
+                    "f3.v-sync", "init v-sync", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
                 text(
-                    "debug.v-sync", "init v-sync", font, updater = textUpdater, scale = 0.5f, x = 10f, y = 10f,
+                    "f3.cursor.position", "init cursor", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
             }
@@ -68,7 +73,8 @@ class F3Layout {
     }
 
     fun updateText() {
-        textUpdater.update("debug.fps", "fps: ${Application.rendererSystem.fps()}")
-        textUpdater.update("debug.v-sync", "v-sync: ${window.vsync}")
+        textUpdater.update("f3.fps", "fps: ${Application.rendererSystem.fps()}")
+        textUpdater.update("f3.v-sync", "v-sync: ${window.vsync}")
+        textUpdater.update("f3.cursor.position", "cursor: [x:${windowSystem.cursorX}, y:${windowSystem.cursorY}]")
     }
 }

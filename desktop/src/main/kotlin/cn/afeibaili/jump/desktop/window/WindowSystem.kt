@@ -17,6 +17,8 @@ import org.lwjgl.glfw.GLFW
 
 class WindowSystem(val window: Window = Application.window) {
     val keySet = KeySet("key" identifier "window")
+    var cursorX: Double = 0.0
+    var cursorY: Double = 0.0
 
     fun loadKeyBind() {
         keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
@@ -43,6 +45,11 @@ class WindowSystem(val window: Window = Application.window) {
 
             Application.screen.update(w.toFloat(), h.toFloat()) //屏幕大小更新
             Application.rendererSystem.uiRenderer.update() // ui数据更新
+        }
+
+        GLFW.glfwSetCursorPosCallback(window.windowLocation) { _, x, y ->
+            cursorX = x
+            cursorY = y
         }
 
         GLFW.glfwSetWindowCloseCallback(window.windowLocation) {
