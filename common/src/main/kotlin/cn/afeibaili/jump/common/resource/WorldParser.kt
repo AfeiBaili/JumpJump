@@ -2,7 +2,7 @@ package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.block.Block
-import cn.afeibaili.jump.common.block.Blocks
+import cn.afeibaili.jump.common.block.BlockTypes
 import cn.afeibaili.jump.common.exception.IdentifierException
 import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.util.logger
@@ -36,6 +36,7 @@ import cn.afeibaili.jump.common.world.World
  * @version 2026/6/3 12:48
  */
 
+@Deprecated("弃用使用文本解析地图数据")
 class WorldParser {
     private val logger = logger { "WorldParser" }
 
@@ -96,17 +97,17 @@ class WorldParser {
             line.forEachIndexed { indexX, char ->
                 val identifier: Identifier? = charBlockMap[char]
                 if (char == ' ') {
-                    blockRow.add(Block(indexX, rowLine, Blocks.AIR))
+                    blockRow.add(Block(indexX, rowLine, BlockTypes.AIR))
                     return@forEachIndexed
                 }
                 if (identifier == null) throw IdentifierException("标识符为空，未知的char: $char")
-                blockRow.add(Block(indexX, rowLine, Blocks.getBlockTypeById(identifier)))
+                blockRow.add(Block(indexX, rowLine, BlockTypes.getBlockTypeById(identifier)))
             }
             blocks.add(blockRow)
             rowLine--
         }
 
         logger.info("[$worldName] world is load")
-        return World(worldName, blocks).also { logger.debug(it) }
+        return World(worldName).also { logger.debug(it) }
     }
 }

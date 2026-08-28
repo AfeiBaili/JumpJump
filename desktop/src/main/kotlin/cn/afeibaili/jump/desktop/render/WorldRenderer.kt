@@ -6,7 +6,6 @@ import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
-import cn.afeibaili.jump.common.world.WorldManager
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.world.WorldModel
 
@@ -50,6 +49,7 @@ class WorldRenderer : Renderable {
     }
 
     override fun render() {
+        //todo 修复世界渲染器
         world.blockModels.forEach { blockModel ->
             blockModel.texture.bind()
 

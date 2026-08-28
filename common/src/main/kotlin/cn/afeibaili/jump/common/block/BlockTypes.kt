@@ -11,7 +11,7 @@ import cn.afeibaili.jump.common.util.logger
  *@version 2026/6/2 22:38
  */
 
-object Blocks {
+object BlockTypes {
     val all = HashMap<Identifier, BlockType>()
     private val logger = logger { "Blocks" }
 

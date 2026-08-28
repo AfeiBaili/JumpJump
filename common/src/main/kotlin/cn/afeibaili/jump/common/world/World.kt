@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.block.Block
+import kotlin.math.floor
 
 
 /**
@@ -10,22 +11,24 @@ import cn.afeibaili.jump.common.block.Block
  *@version 2026/6/2 22:33
  */
 
-class World(val name: String, val blocks: List<List<Block>>) {
+class World(
+    val name: String,
+    val layers: Array<Layer> = arrayOf(
+        Layer("player"), Layer("background1"), Layer("background1"),
+    ),
+) {
     override fun toString(): String {
-        return buildString {
-            appendLine("world name is $name")
-            blocks.forEach {
-                appendLine("|--block ${it.joinToString("")}")
-            }
-        }
+        return "world name: $name, layer count: ${layers.size}, chunk size: ${layers[0].chunks.size}"
     }
 
-    fun getBlockAt(x: Int, y: Int): Block? {
-        if (x < 0 || y < 0) return null
-        val blockRow: Int = blocks.size
-        if (y >= blockRow) return null
-        val blockCol: Int = blocks[y].size
-        if (x >= blockCol) return null
-        return blocks[y][x]
+    fun getBlockAt(layerIndex: Int, x: Int, y: Int): Block? {
+        if (layerIndex < 0 || layerIndex >= layers.size) return null
+        val layer: Layer = layers[layerIndex]
+        val chunkX = floor(x.toFloat() / Chunk.CHUNK_SIDE).toInt()
+        val chunkY = floor(y.toFloat() / Chunk.CHUNK_SIDE).toInt()
+        val chunk: Chunk? = layer.getChunkAt(chunkX, chunkY)
+        val blockX = x % Chunk.CHUNK_SIDE
+        val blockY = y % Chunk.CHUNK_SIDE
+        return chunk?.getBlockAt(blockX, blockY)
     }
 }

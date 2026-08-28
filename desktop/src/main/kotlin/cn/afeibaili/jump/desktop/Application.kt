@@ -4,7 +4,7 @@ import cn.afeibaili.gl.Window
 import cn.afeibaili.gl.logger.Logger
 import cn.afeibaili.gl.render.layout.RootLayout
 import cn.afeibaili.jump.common.util.logger
-import cn.afeibaili.jump.common.world.WorldManager
+import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.render.RendererSystem
@@ -22,14 +22,13 @@ import cn.afeibaili.jump.desktop.world.WorldModel
 
 class Application {
     companion object {
-        var screenWidth = 800
-        var screenHeight = 800
-
         init {
             Logger.printDebug = true
             Logger.writeFile = false
         }
 
+        var screenWidth = 800
+        var screenHeight = 800
         private val logger = logger { "Application" } //日志器
         var running = true
         val window: Window = Window.builder() //窗口构建器
@@ -59,18 +58,13 @@ class Application {
             logger.info("application is initialized")
         }
 
-        fun loadWorld(worldName: String): WorldModel {
-            WorldManager.load()
-            return WorldModel.of(
-                WorldManager.worlds[worldName] ?: throw IllegalArgumentException(
-                    "未知的世界: $worldName; 当前世界列表${WorldManager.worlds.keys.joinToString("、")}"
-                )
-            )
+        fun loadWorld(): WorldModel {
+            return WorldModel.of(World("void"))
         }
 
         @JvmStatic
         fun main(args: Array<String>) {
-            world = loadWorld("test world")
+            world = loadWorld()
             setup()
             logicThread.start()
             window.loopFrame({ running }) {

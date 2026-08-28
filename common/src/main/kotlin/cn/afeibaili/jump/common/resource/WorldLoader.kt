@@ -18,6 +18,7 @@ import java.io.FileNotFoundException
  * @version 2026/6/2 22:58
  */
 
+@Deprecated("弃用使用文件加载地图数据")
 object WorldLoader : Loader<Map<String, World>> {
     private val worldPath = "${System.getProperty("user.dir")}/resource/world"
     private val logger = logger { "WorldLoader" }

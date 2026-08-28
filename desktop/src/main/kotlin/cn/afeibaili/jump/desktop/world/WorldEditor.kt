@@ -41,6 +41,6 @@ class WorldEditor : TickHandler {
 
         blockPositionX = blockX
         blockPositionY = blockY
-        currentCursorBlock = world.getBlockAt(blockX, -blockY)
+        currentCursorBlock = world.getBlockAt(0, blockX, -blockY)
     }
 }

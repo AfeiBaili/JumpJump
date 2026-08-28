@@ -6,7 +6,7 @@ import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.Identifier
-import cn.afeibaili.jump.common.block.Blocks
+import cn.afeibaili.jump.common.block.BlockTypes
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.util.logger
@@ -28,7 +28,6 @@ import cn.afeibaili.jump.desktop.world.block.BlockUv
 class WorldModel private constructor(
     val world: World,
     val blockModels: List<BlockAtlas>,
-    val size: Int,
     val textureAtlas: TextureAtlas,
 ) {
     companion object {
@@ -41,44 +40,49 @@ class WorldModel private constructor(
 
         fun of(world: World): WorldModel {
             // 图集Index（id）
+            // todo 重写世界模型
             val blockIndexModelMap =
                 mutableMapOf<Index, Pair<Texture, MutableList<BlockModel>>>()
             val typeMap = mutableMapOf<Identifier, BlockModelType>()
 
-            world.blocks.flatMap { it }.forEach { block ->
-                var atlas: Atlas? = blockTextureAtlas.getAtlas(block.type.id)
-                if (atlas == null) {
-                    logger.warn("在图集中找不到此id: ${block.type.id}")
-                    atlas = blockTextureAtlas.getAtlas(Blocks.ERROR.id)
-                }
-                if (atlas == null) throw ImageException("找不到错误纹理，其中纹理缺失: ${block.type.id}")
+            world.layers.forEach { layer ->
+                layer.chunks.forEach { chunk ->
+                    chunk.blocks.forEach { block ->
+                        var atlas: Atlas? = blockTextureAtlas.getAtlas(block.type.id)
+                        if (atlas == null) {
+                            logger.warn("在图集中找不到此id: ${block.type.id}")
+                            atlas = blockTextureAtlas.getAtlas(BlockTypes.ERROR.id)
+                        }
+                        if (atlas == null) throw ImageException("找不到错误纹理，其中纹理缺失: ${block.type.id}")
 
-                val uvs: List<FloatArray> = runCatching {
-                    blockTextureAtlas.getUvs(block.type.id)
-                }.getOrElse {
-                    runCatching {
-                        blockTextureAtlas.getUvs(Blocks.ERROR.id)
-                    }.getOrElse {
-                        throw ImageException("找不到错误纹理uv")
+                        val uvs: List<FloatArray> = runCatching {
+                            blockTextureAtlas.getUvs(block.type.id)
+                        }.getOrElse {
+                            runCatching {
+                                blockTextureAtlas.getUvs(BlockTypes.ERROR.id)
+                            }.getOrElse {
+                                throw ImageException("找不到错误纹理uv")
+                            }
+                        }
+
+                        var type: BlockModelType? = typeMap[block.type.identifier]
+                        if (type == null) {
+                            val info: BlockInfo? = blockInfo[block.type.id]
+                            val switchIntervalMilli: Int = info?.switchIntervalMilli ?: 500
+                            typeMap[block.type.identifier] =
+                                BlockModelType.register(block.type.identifier, BlockUv(uvs, switchIntervalMilli))
+                        }
+                        type = typeMap[block.type.identifier]
+
+                        val texture: Texture = textureSideMap[atlas.atlasId]!!
+                        val pair = blockIndexModelMap[atlas.atlasId]
+                        val blockModel = BlockModel(block.x, block.y, type!!)
+                        BlockModel += blockModel // 添加到BlockModel.all属性中
+                        if (pair == null) blockIndexModelMap[atlas.atlasId] =
+                            texture to mutableListOf(blockModel)
+                        else pair.second.add(blockModel)
                     }
                 }
-
-                var type: BlockModelType? = typeMap[block.type.identifier]
-                if (type == null) {
-                    val info: BlockInfo? = blockInfo[block.type.id]
-                    val switchIntervalMilli: Int = info?.switchIntervalMilli ?: 500
-                    typeMap[block.type.identifier] =
-                        BlockModelType.register(block.type.identifier, BlockUv(uvs, switchIntervalMilli))
-                }
-                type = typeMap[block.type.identifier]
-
-                val texture: Texture = textureSideMap[atlas.atlasId]!!
-                val pair = blockIndexModelMap[atlas.atlasId]
-                val blockModel = BlockModel(block.x, block.y, type!!)
-                BlockModel += blockModel // 添加到BlockModel.all属性中
-                if (pair == null) blockIndexModelMap[atlas.atlasId] =
-                    texture to mutableListOf(blockModel)
-                else pair.second.add(blockModel)
             }
 
             val blockAtlases: List<BlockAtlas> = blockIndexModelMap.toList()
@@ -86,8 +90,7 @@ class WorldModel private constructor(
                     BlockAtlas(pair.first, pair.second, pair.second.size)
                 }
 
-            val size: Int = world.blocks.sumOf { blockLine -> blockLine.size }
-            return WorldModel(world, blockAtlases, size, blockTextureAtlas)
+            return WorldModel(world, blockAtlases, blockTextureAtlas)
         }
     }
 
