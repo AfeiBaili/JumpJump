@@ -1,13 +1,13 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.gl.render.GridRenderer
+import cn.afeibaili.gl.render.WorldRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
-import cn.afeibaili.jump.desktop.world.WorldModel
+import cn.afeibaili.jump.desktop.world.model.WorldModel
 
 
 /**
@@ -17,20 +17,19 @@ import cn.afeibaili.jump.desktop.world.WorldModel
  * @version 2026/6/6 18:59
  */
 
-class WorldRenderer : Renderable {
+class WorldRenderer {
     private val logger = logger { "WorldRenderer" }
 
     val camera get() = _camera
-    val gridRenderer get() = _gridRenderer
     val world get() = Application.world
 
     private lateinit var _camera: Camera
     private lateinit var _program: Program
-    private lateinit var _gridRenderer: GridRenderer
+    private lateinit var renderer: WorldRender
 
     fun init() {
         logger.info("upload texture to gpu")
-        WorldModel.blockTextureAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
+        WorldModel.blockAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
         logger.info("transform to world model")
         logger.info("create program")
         _program = Program.create(
@@ -45,32 +44,56 @@ class WorldRenderer : Renderable {
         )
         _camera = Camera(_program, "projection", "view")
         _program.link()
-        _gridRenderer = GridRenderer(_program, _camera)
+        renderer = WorldRender(_program, _camera, world)
     }
 
-    override fun render() {
-        //todo 修复世界渲染器
-        world.blockModels.forEach { blockModel ->
-            blockModel.texture.bind()
+    fun render() {
+        renderer.renderWorld()
+    }
 
-            gridRenderer.renderGrid(
-                {
-                    for (block in blockModel.blockModel) {
-                        putFloat(block.x.toFloat())
-                        putFloat(block.y.toFloat())
+    companion object {
+        class WorldRender(
+            override val program: Program,
+            override val camera: Camera,
+            val world: WorldModel,
+        ) : WorldRenderer(program, camera) {
+            fun renderWorld() {
+                world.layers.forEach { layerModel ->
+                    layerModel.blockAtlas.forEach { blockAtlas ->
+                        blockAtlas.texture.bind()
+                        var instanceBuffer = getInstanceBuffer()
+                        var uvBuffer = getUvBuffer()
+                        if (instanceBuffer == null || uvBuffer == null) return
+                        var count = 0
+                        blockAtlas.blockModel.forEach { blockModel ->
+                            if (count >= BLOCK_SIZE) {
+                                putBuffer()
+                                renderBatch(count)
+                                instanceBuffer = getInstanceBuffer()
+                                uvBuffer = getUvBuffer()
+                                if (instanceBuffer == null || uvBuffer == null) return
+                                count = 0
+                            }
+
+                            instanceBuffer!!.putFloat(blockModel.x)
+                            instanceBuffer.putFloat(blockModel.y)
+
+                            val uv = blockModel.type.uv.get()
+                            uvBuffer!!.putFloat(uv[0])
+                            uvBuffer.putFloat(uv[1])
+                            uvBuffer.putFloat(uv[2])
+                            uvBuffer.putFloat(uv[3])
+                            count++
+                        }
+
+                        putBuffer()
+
+                        if (count > 0) {
+                            renderBatch(count)
+                        }
                     }
-                },
-                {
-                    for (block in blockModel.blockModel) {
-                        val uv = block.type.uv.get()
-                        putFloat(uv[0])
-                        putFloat(uv[1])
-                        putFloat(uv[2])
-                        putFloat(uv[3])
-                    }
-                },
-                blockModel.size
-            )
+                }
+            }
         }
     }
 }

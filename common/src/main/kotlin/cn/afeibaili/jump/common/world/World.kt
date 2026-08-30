@@ -14,7 +14,7 @@ import kotlin.math.floor
 class World(
     val name: String,
     val layers: Array<Layer> = arrayOf(
-        Layer("player"), Layer("background1"), Layer("background1"),
+        Layer("player"), Layer("background1"), Layer("background2"),
     ),
 ) {
     override fun toString(): String {

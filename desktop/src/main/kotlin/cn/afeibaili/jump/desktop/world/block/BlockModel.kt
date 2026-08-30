@@ -7,12 +7,4 @@ package cn.afeibaili.jump.desktop.world.block
  * @version 2026/6/5 22:43
  */
 
-class BlockModel(val x: Int, val y: Int, val type: BlockModelType) {
-    companion object {
-        val all = mutableListOf<BlockModel>()
-
-        operator fun plusAssign(blockModel: BlockModel) {
-            all.add(blockModel)
-        }
-    }
-}
+class BlockModel(val x: Float, val y: Float, val type: BlockModelType)

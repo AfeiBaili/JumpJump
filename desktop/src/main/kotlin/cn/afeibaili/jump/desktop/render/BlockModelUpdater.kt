@@ -10,7 +10,7 @@ import cn.afeibaili.jump.desktop.world.block.BlockModelType
  * @version 2026/7/2 20:57
  */
 
-class BlockRenderer {
+class BlockModelUpdater {
     val blockType get() = BlockModelType.all
 
     fun init() {

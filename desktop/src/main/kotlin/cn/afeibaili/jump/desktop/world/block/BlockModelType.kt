@@ -14,7 +14,6 @@ class BlockModelType(val identifier: Identifier, val uv: BlockUv) {
     companion object {
         val all = mutableListOf<BlockModelType>()
         fun register(identifier: Identifier, uv: BlockUv): BlockModelType {
-
             return BlockModelType(identifier, uv).also { all.add(it) }
         }
     }

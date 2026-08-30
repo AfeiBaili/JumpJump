@@ -50,12 +50,15 @@ object TextureManager {
         )
     }
 
+    /** 方块所有图集 */
     val blockTextureAtlas = TextureAtlas.create(
         "block",
         ResourceFileGetter.getResourceFileList("block"),
         1,
         air, *error.toTypedArray(),
     )
+
+    /** 不同大小的图集 */
     val textureSideMap: Map<Index, Texture> =
         blockTextureAtlas.atlas.map { it.key to it.value.texture }.toMap()
 

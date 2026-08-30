@@ -15,7 +15,7 @@ class RendererSystem {
     private val logger = logger { "RendererSystem" }
     val worldRenderer = WorldRenderer()
     val playerRenderer = PlayerRenderer()
-    val blockRenderer = BlockRenderer()
+    val blockModelUpdater = BlockModelUpdater()
     val uiRenderer = UIRenderer()
     // val debugRenderer = DebugRenderer()
     val fps = FpsTimer()
@@ -24,14 +24,14 @@ class RendererSystem {
         logger.info("initialize world renderer")
         worldRenderer.init()
         logger.info("initialize block renderer")
-        blockRenderer.init()
+        blockModelUpdater.init()
         logger.info("initialize ui renderer")
         uiRenderer.init()
     }
 
     fun frame() {
         fps.update()
-        blockRenderer.update()
+        blockModelUpdater.update()
         worldRenderer.render()
         playerRenderer.render()
         uiRenderer.render()

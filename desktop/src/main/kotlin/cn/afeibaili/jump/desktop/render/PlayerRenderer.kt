@@ -12,12 +12,12 @@ import cn.afeibaili.jump.desktop.logic.LogicThread
  * @version 2026/6/28 01:55
  */
 
-class PlayerRenderer : Renderable {
+class PlayerRenderer {
     val player get() = Player.self
     val logic get() = LogicThread.self
     val camera get() = Application.camera
 
-    override fun render() {
+    fun render() {
         // 插值渲染
         val alpha = logic.accumulationSecondes / logic.step // 当前进度
         val renderX = player.pvx + (player.x - player.pvx) * alpha

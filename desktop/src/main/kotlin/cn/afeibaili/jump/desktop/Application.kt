@@ -10,7 +10,7 @@ import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.render.RendererSystem
 import cn.afeibaili.jump.desktop.window.WindowSystem
 import cn.afeibaili.jump.desktop.world.WorldEditor
-import cn.afeibaili.jump.desktop.world.WorldModel
+import cn.afeibaili.jump.desktop.world.model.WorldModel
 
 
 /**
@@ -64,13 +64,18 @@ class Application {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            world = loadWorld()
-            setup()
-            logicThread.start()
-            window.loopFrame({ running }) {
-                rendererSystem.frame()
+            runCatching {
+                world = loadWorld()
+                setup()
+                logicThread.start()
+                window.loopFrame({ running }) {
+                    rendererSystem.frame()
+                }
+                logicThread.thread.join()
+            }.onFailure {
+                logger.error("渲染线程出错, 退出程序: ${it.stackTraceToString()}")
+                stop()
             }
-            logicThread.thread.join()
         }
 
         fun stop() {
