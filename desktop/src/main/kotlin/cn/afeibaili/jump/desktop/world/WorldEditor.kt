@@ -41,7 +41,6 @@ class WorldEditor : TickHandler {
 
         blockPositionX = blockX
         blockPositionY = blockY
-        //fixme 修复区块选择方块错误
         currentCursorBlock = world.getBlockAt(0, blockX, blockY)
     }
 }

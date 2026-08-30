@@ -9,6 +9,7 @@ import cn.afeibaili.jump.common.block.BlockTypes
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.util.logger
+import cn.afeibaili.jump.common.world.Chunk
 import cn.afeibaili.jump.common.world.Layer
 import cn.afeibaili.jump.common.world.World
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
@@ -70,7 +71,11 @@ class WorldModel(val world: World, val layers: Array<LayerModel>) {
 
                         val texture: Texture = textureSide[atlas.atlasId]!!
                         val textureModelList: BlockTextureModelList? = blockModelData[atlas.atlasId]
-                        val blockModel = BlockModel(block.x.toFloat(), block.y.toFloat(), blockModelType!!)
+                        val blockModel = BlockModel(
+                            chunk.chunkX * Chunk.CHUNK_SIDE + block.x.toFloat(),
+                            chunk.chunkY * Chunk.CHUNK_SIDE + block.y.toFloat(),
+                            blockModelType!!
+                        )
                         if (textureModelList == null) blockModelData[atlas.atlasId] =
                             BlockTextureModelList(texture, mutableListOf(blockModel))
                         else textureModelList.blocks.add(blockModel)
