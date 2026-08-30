@@ -72,8 +72,8 @@ class WorldModel(val world: World, val layers: Array<LayerModel>) {
                         val texture: Texture = textureSide[atlas.atlasId]!!
                         val textureModelList: BlockTextureModelList? = blockModelData[atlas.atlasId]
                         val blockModel = BlockModel(
-                            chunk.chunkX * Chunk.CHUNK_SIDE + block.x.toFloat(),
-                            chunk.chunkY * Chunk.CHUNK_SIDE + block.y.toFloat(),
+                            chunk.chunkX * Chunk.CHUNK_SIDE + block.x,
+                            chunk.chunkY * Chunk.CHUNK_SIDE + block.y,
                             blockModelType!!
                         )
                         if (textureModelList == null) blockModelData[atlas.atlasId] =

@@ -75,8 +75,8 @@ class WorldRenderer {
                                 count = 0
                             }
 
-                            instanceBuffer!!.putFloat(blockModel.x)
-                            instanceBuffer.putFloat(blockModel.y)
+                            instanceBuffer!!.putInt(blockModel.x)
+                            instanceBuffer.putInt(blockModel.y)
 
                             val uv = blockModel.type.uv.get()
                             uvBuffer!!.putFloat(uv[0])
