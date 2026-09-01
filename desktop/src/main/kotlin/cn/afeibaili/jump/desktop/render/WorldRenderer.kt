@@ -7,6 +7,7 @@ import cn.afeibaili.gl.render.shader.Shader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.render.texture.TextureManager
 import cn.afeibaili.jump.desktop.world.model.WorldModel
 
 
@@ -29,7 +30,7 @@ class WorldRenderer {
 
     fun init() {
         logger.info("upload texture to gpu")
-        WorldModel.blockAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
+        TextureManager.blockTextureAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
         logger.info("transform to world model")
         logger.info("create program")
         _program = Program.create(
@@ -48,7 +49,7 @@ class WorldRenderer {
     }
 
     fun render() {
-        renderer.renderWorld()
+        renderer.render()
     }
 
     companion object {
@@ -57,39 +58,18 @@ class WorldRenderer {
             override val camera: Camera,
             val world: WorldModel,
         ) : WorldRenderer(program, camera) {
-            fun renderWorld() {
-                world.layers.forEach { layerModel ->
-                    layerModel.blockAtlas.forEach { blockAtlas ->
-                        blockAtlas.texture.bind()
-                        var instanceBuffer = getInstanceBuffer()
-                        var uvBuffer = getUvBuffer()
-                        if (instanceBuffer == null || uvBuffer == null) return
-                        var count = 0
-                        blockAtlas.blockModel.forEach { blockModel ->
-                            if (count >= BLOCK_SIZE) {
-                                putBuffer()
-                                renderBatch(count)
-                                instanceBuffer = getInstanceBuffer()
-                                uvBuffer = getUvBuffer()
-                                if (instanceBuffer == null || uvBuffer == null) return
-                                count = 0
-                            }
-
-                            instanceBuffer!!.putInt(blockModel.x)
-                            instanceBuffer.putInt(blockModel.y)
-
-                            val uv = blockModel.type.uv.get()
-                            uvBuffer!!.putFloat(uv[0])
-                            uvBuffer.putFloat(uv[1])
-                            uvBuffer.putFloat(uv[2])
-                            uvBuffer.putFloat(uv[3])
-                            count++
+            fun render() {
+                world.layers.forEach { layer ->
+                    layer.chunks.forEach { chunkModel ->
+                        if (chunkModel.changed) {
+                            chunkModel.update()
                         }
 
-                        putBuffer()
-
-                        if (count > 0) {
-                            renderBatch(count)
+                        for (atlas in chunkModel.blockAtlas) {
+                            atlas.texture.bind()
+                            uploadInstanceBuffer(atlas.instanceBuffer)
+                            uploadUvBuffer(atlas.uvBuffer)
+                            renderInstance(atlas.size)
                         }
                     }
                 }

@@ -8,4 +8,6 @@ package cn.afeibaili.jump.common.block
  *@version 2026/6/2 22:36
  */
 
-data class Block(val x: Int, val y: Int, val type: BlockType)
+data class Block(val x: Int, val y: Int, val type: BlockType) {
+    val id get() = type.id
+}

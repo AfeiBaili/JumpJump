@@ -43,7 +43,11 @@ class Chunk(
     companion object {
         fun createEmpty(chunkX: Int, chunkY: Int): Chunk {
             val blocks = Array(CHUNK_SIDE * CHUNK_SIDE) { index ->
-                Block(index % CHUNK_SIDE, index / CHUNK_SIDE, BlockTypes.DIRT)
+                Block(
+                    (CHUNK_SIDE * chunkX) + index % CHUNK_SIDE,
+                    (CHUNK_SIDE * chunkY) + index / CHUNK_SIDE,
+                    BlockTypes.DIRT
+                )
             }
             val chunk = Chunk(chunkX, chunkY, blocks)
             return chunk

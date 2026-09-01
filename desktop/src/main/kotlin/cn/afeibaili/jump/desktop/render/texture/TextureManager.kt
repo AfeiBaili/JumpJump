@@ -59,7 +59,7 @@ object TextureManager {
     )
 
     /** 不同大小的图集 */
-    val textureSideMap: Map<Index, Texture> =
+    val textureSizeMap: Map<Index, Texture> =
         blockTextureAtlas.atlas.map { it.key to it.value.texture }.toMap()
 
     fun getDefaultImage() = BufferedImage(DEFAULT_MODEL_SIZE, DEFAULT_MODEL_SIZE, BufferedImage.TYPE_INT_ARGB)
