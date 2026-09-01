@@ -46,7 +46,7 @@ class Chunk(
                 Block(
                     (CHUNK_SIDE * chunkX) + index % CHUNK_SIDE,
                     (CHUNK_SIDE * chunkY) + index / CHUNK_SIDE,
-                    BlockTypes.DIRT
+                    BlockTypes.ERROR
                 )
             }
             val chunk = Chunk(chunkX, chunkY, blocks)

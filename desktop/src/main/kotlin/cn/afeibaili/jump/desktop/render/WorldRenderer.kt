@@ -61,9 +61,7 @@ class WorldRenderer {
             fun render() {
                 world.layers.forEach { layer ->
                     layer.chunks.forEach { chunkModel ->
-                        if (chunkModel.changed) {
-                            chunkModel.update()
-                        }
+                        chunkModel.update()
 
                         for (atlas in chunkModel.blockAtlas) {
                             atlas.texture.bind()

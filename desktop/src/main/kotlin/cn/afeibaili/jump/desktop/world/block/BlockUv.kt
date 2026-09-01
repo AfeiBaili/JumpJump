@@ -14,15 +14,19 @@ class BlockUv(val uv: List<FloatArray>, var switchIntervalMilli: Int = 500) {
     var indexUv = 0
     var lastMillis = Time.millis()
     var accumulator = 0f
+    var changed = false
 
-    fun getNext(): FloatArray {
+    private fun getNext(): FloatArray {
         if (++indexUv >= uv.size) {
             indexUv = 0
         }
         return get()
     }
 
-    fun get(): FloatArray = uv[indexUv]
+    fun get(): FloatArray {
+        changed = false
+        return uv[indexUv]
+    }
 
     fun update() {
         val currentMillis = Time.millis()
@@ -32,6 +36,7 @@ class BlockUv(val uv: List<FloatArray>, var switchIntervalMilli: Int = 500) {
         if (accumulator > switchIntervalMilli) {
             accumulator -= switchIntervalMilli
             getNext()
+            changed = true
         }
     }
 }

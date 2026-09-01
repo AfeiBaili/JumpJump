@@ -24,13 +24,16 @@ import cn.afeibaili.jump.desktop.world.block.BlockUv
 class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
     var changed = true
 
-    //todo 细化uv和实例
     fun update() {
-        blockAtlas.forEach { blockAtlas ->
-            blockAtlas.updateUvBuffer()
-            blockAtlas.updateInstanceBuffer()
+        if (changed) {
+            updateInstanceBuffer()
+            changed = false
         }
-        changed = false
+        blockAtlas.forEach { blockAtlas -> blockAtlas.update() }
+    }
+
+    fun updateInstanceBuffer() {
+        blockAtlas.forEach { blockAtlas -> blockAtlas.updateInstanceBuffer() }
     }
 
     fun setBlockAt() {
@@ -67,8 +70,7 @@ class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
                     val info: BlockInfo? = blockInfo[block.id]
                     val switchIntervalMilli: Int = info?.switchIntervalMilli ?: 500
                     blockTypeModelMap[block.id] = BlockModelType.register(
-                        block.type.identifier,
-                        BlockUv(uvs, switchIntervalMilli)
+                        block.type.identifier, BlockUv(uvs, switchIntervalMilli)
                     )
                 }
                 blockModelType = blockTypeModelMap[block.id]!!

@@ -20,6 +20,20 @@ class BlockAtlas(val texture: Texture, val blockModel: List<BlockModel>, val siz
     val instanceBuffer = BufferUtils.createByteBuffer(WorldRenderer.INSTANCE_SIZE_BYTE.toInt())
     val uvBuffer = BufferUtils.createByteBuffer(WorldRenderer.UV_SIZE_BYTE.toInt())
 
+    /**
+     * ## 查询uv更新，如果更新上传纹理
+     */
+    fun update() {
+        var isUpdateUv = false
+        for (model in blockModel) {
+            if (model.type.uv.changed) {
+                isUpdateUv = true
+                break
+            }
+        }
+        if (isUpdateUv) updateUvBuffer()
+    }
+
     fun updateInstanceBuffer() {
         instanceBuffer.clear()
         blockModel.forEach { blockModel ->
