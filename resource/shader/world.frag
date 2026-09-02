@@ -4,7 +4,9 @@ uniform sampler2D atlas;
 
 in vec2 uv;
 out vec4 outColor;
+uniform float light;
 
 void main() {
-    outColor = texture(atlas, vec2(uv.x, uv.y));
+    vec4 color = texture(atlas, vec2(uv.x, uv.y));
+    outColor = vec4(color.r * light, color.g * light, color.b * light, color.a);
 }

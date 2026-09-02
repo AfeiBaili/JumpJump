@@ -8,6 +8,7 @@ import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
+import cn.afeibaili.jump.desktop.world.model.LayerModel
 import cn.afeibaili.jump.desktop.world.model.WorldModel
 
 
@@ -59,18 +60,24 @@ class WorldRenderer {
             val world: WorldModel,
         ) : WorldRenderer(program, camera) {
             fun render() {
-                world.layers.forEach { layer ->
+                val layerSize = world.layers.size
+                for (index in layerSize - 1 downTo 0) {
+                    val layer: LayerModel = world.layers[index]
                     layer.chunks.forEach { chunkModel ->
                         chunkModel.update()
-
                         for (atlas in chunkModel.blockAtlas) {
                             atlas.texture.bind()
                             uploadInstanceBuffer(atlas.instanceBuffer)
                             uploadUvBuffer(atlas.uvBuffer)
+                            program.setUniform("light", f1 = computeLayerLight(index, layerSize))
                             renderInstance(atlas.size)
                         }
                     }
                 }
+            }
+
+            fun computeLayerLight(layerIndex: Int, size: Int): Float {
+                return 1f - layerIndex / size.toFloat() / 1.5f
             }
         }
     }
