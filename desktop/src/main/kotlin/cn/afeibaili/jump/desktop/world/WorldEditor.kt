@@ -2,6 +2,7 @@ package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.input.MouseButton
 import cn.afeibaili.jump.common.block.Block
+import cn.afeibaili.jump.common.block.BlockType
 import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.entity.Player
@@ -41,9 +42,7 @@ class WorldEditor : TickHandler {
 
     fun loadMouseButtonBinds() {
         mouseButtonSet.bind(MouseButton("released", GLFW.GLFW_MOUSE_BUTTON_1)) {
-            released {
-
-            }
+            released { placeBlockByButton() }
         }
     }
 
@@ -54,7 +53,7 @@ class WorldEditor : TickHandler {
     }
 
     fun placeBlockByButton() {
-        //todo
+        world.setBlockAt(0, getCurrentBlockX(), getCurrentBlockY(), BlockType.WITHERED_PLANKS)
     }
 
     fun getCurrentBlockX() = floor(currentPlayerX + (currentCursorX.toFloat() / width) * zoom * aspect).toInt()

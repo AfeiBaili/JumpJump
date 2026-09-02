@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.common.block
 
 import cn.afeibaili.jump.common.Identifier
+import cn.afeibaili.jump.common.util.logger
 
 
 /**
@@ -12,4 +13,39 @@ import cn.afeibaili.jump.common.Identifier
 
 data class BlockType(val identifier: Identifier) {
     val id get() = identifier.id
+
+    /**
+     * # 方块类型实例
+     *
+     * @author AfeiBaili
+     * @version 2026/09/02 13:13
+     */
+    companion object {
+        val all = HashMap<Identifier, BlockType>()
+        private val logger = logger { "Blocks" }
+
+        val ERROR = register("error")
+        val AIR = register("air")
+        val DIRT = register("dirt")
+        val GRASS_DIRT = register("grass_dirt")
+        val GRASS = register("grass")
+        val GRASS_TALL = register("grass_tall")
+        val WITHERED_PLANKS = register("withered_planks")
+        val STONE = register("stone")
+
+        fun register(id: String): BlockType {
+            val identifier = Identifier("block", id)
+            logger.info("registering $identifier")
+            return BlockType(identifier).also { all[identifier] = it }
+        }
+
+        fun getBlockTypeById(identifier: Identifier): BlockType {
+            val blockType: BlockType? = all[identifier]
+            if (blockType == null) {
+                logger.warn("not found $identifier")
+                return ERROR
+            }
+            return blockType
+        }
+    }
 }

@@ -2,7 +2,6 @@ package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.BlockType
-import cn.afeibaili.jump.common.block.BlockTypes
 import java.util.*
 
 
@@ -24,9 +23,21 @@ class Chunk(
     val chunkY: Int,
     val blocks: Array<Block>,
 ) {
+    var changed = false
+
+    fun update() {
+        changed = false
+    }
+
     fun getBlockAt(x: Int, y: Int): Block? {
         if (x < 0 || x >= CHUNK_SIDE || y < 0 || y >= CHUNK_SIDE) return null
         return blocks[y * CHUNK_SIDE + x]
+    }
+
+    fun setBlockAt(x: Int, y: Int, blockType: BlockType) {
+        if (x < 0 || x >= CHUNK_SIDE || y < 0 || y >= CHUNK_SIDE) return
+        blocks[y * CHUNK_SIDE + x] = Block((CHUNK_SIDE * chunkX) + x, (CHUNK_SIDE * chunkY) + y, blockType)
+        changed = true
     }
 
     override fun hashCode(): Int {
@@ -43,7 +54,7 @@ class Chunk(
 
     companion object {
         fun createEmpty(chunkX: Int, chunkY: Int): Chunk {
-            return createByBlock(chunkX, chunkY, BlockTypes.AIR)
+            return createByBlock(chunkX, chunkY, BlockType.AIR)
         }
 
         fun createByBlock(chunkX: Int, chunkY: Int, blockType: BlockType): Chunk {

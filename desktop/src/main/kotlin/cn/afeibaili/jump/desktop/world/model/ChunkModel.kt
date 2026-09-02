@@ -4,7 +4,7 @@ import cn.afeibaili.gl.exception.ImageException
 import cn.afeibaili.gl.image.Atlas
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.util.Index
-import cn.afeibaili.jump.common.block.BlockTypes
+import cn.afeibaili.jump.common.block.BlockType
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.world.Chunk
@@ -21,24 +21,21 @@ import cn.afeibaili.jump.desktop.world.block.BlockUv
  * @version 2026/8/31 13:20
  */
 
-class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
+class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
     var changed = true
 
     fun update() {
-        if (changed) {
-            updateInstanceBuffer()
+        if (chunk.changed || changed) {
+            blockAtlas = buildAtlases(chunk)
+
+            blockAtlas.forEach { blockAtlas ->
+                blockAtlas.updateInstanceBuffer()
+                blockAtlas.updateUvBuffer()
+            }
+            chunk.update()
             changed = false
         }
         blockAtlas.forEach { blockAtlas -> blockAtlas.update() }
-    }
-
-    fun updateInstanceBuffer() {
-        blockAtlas.forEach { blockAtlas -> blockAtlas.updateInstanceBuffer() }
-    }
-
-    fun setBlockAt() {
-        changed = true
-        TODO()
     }
 
     companion object {
@@ -47,13 +44,17 @@ class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
         val blockInfo get() = BlockInfoLoader.load()
 
         fun of(chunk: Chunk): ChunkModel {
+            return ChunkModel(chunk, buildAtlases(chunk))
+        }
+
+        fun buildAtlases(chunk: Chunk): MutableList<BlockAtlas> {
             val blockTypeModelMap = mutableMapOf<String, BlockModelType>()
             val blockModelData = mutableMapOf<Index, BlockTextureModelList>()
 
             chunk.blocks.forEach { block ->
                 var atlas: Atlas? = blockTextureAtlas.getAtlas(block.id)
                 if (atlas == null) {
-                    atlas = blockTextureAtlas.getAtlas(BlockTypes.ERROR.id)
+                    atlas = blockTextureAtlas.getAtlas(BlockType.ERROR.id)
                 }
                 atlas ?: throw ImageException("找不到错误纹理，其中纹理缺失: ${block.type.id}")
 
@@ -61,7 +62,7 @@ class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
                     blockTextureAtlas.getUvs(block.id)
                 }.getOrElse {
                     runCatching {
-                        blockTextureAtlas.getUvs(BlockTypes.ERROR.id)
+                        blockTextureAtlas.getUvs(BlockType.ERROR.id)
                     }.getOrElse { throw ImageException("找不到错误纹理uv") }
                 }
 
@@ -86,7 +87,7 @@ class ChunkModel(val chunk: Chunk, val blockAtlas: List<BlockAtlas>) {
             val atlases: List<BlockAtlas> =
                 blockModelData.map { (_, bl) -> BlockAtlas(bl.texture, bl.blocks, bl.blocks.size) }
 
-            return ChunkModel(chunk, atlases)
+            return atlases as MutableList<BlockAtlas>
         }
     }
 

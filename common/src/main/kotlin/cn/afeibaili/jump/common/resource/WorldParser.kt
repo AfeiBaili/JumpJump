@@ -2,7 +2,7 @@ package cn.afeibaili.jump.common.resource
 
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.block.Block
-import cn.afeibaili.jump.common.block.BlockTypes
+import cn.afeibaili.jump.common.block.BlockType
 import cn.afeibaili.jump.common.exception.IdentifierException
 import cn.afeibaili.jump.common.exception.KeyException
 import cn.afeibaili.jump.common.util.logger
@@ -97,11 +97,11 @@ class WorldParser {
             line.forEachIndexed { indexX, char ->
                 val identifier: Identifier? = charBlockMap[char]
                 if (char == ' ') {
-                    blockRow.add(Block(indexX, rowLine, BlockTypes.AIR))
+                    blockRow.add(Block(indexX, rowLine, BlockType.AIR))
                     return@forEachIndexed
                 }
                 if (identifier == null) throw IdentifierException("标识符为空，未知的char: $char")
-                blockRow.add(Block(indexX, rowLine, BlockTypes.getBlockTypeById(identifier)))
+                blockRow.add(Block(indexX, rowLine, BlockType.getBlockTypeById(identifier)))
             }
             blocks.add(blockRow)
             rowLine--

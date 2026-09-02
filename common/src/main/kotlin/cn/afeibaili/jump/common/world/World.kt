@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.block.Block
+import cn.afeibaili.jump.common.block.BlockType
 import kotlin.math.floor
 
 
@@ -23,12 +24,29 @@ class World(
 
     fun getBlockAt(layerIndex: Int, x: Int, y: Int): Block? {
         if (layerIndex < 0 || layerIndex >= layers.size) return null
-        val layer: Layer = layers[layerIndex]
-        val chunkX = floor(x.toFloat() / Chunk.CHUNK_SIDE).toInt()
-        val chunkY = floor(y.toFloat() / Chunk.CHUNK_SIDE).toInt()
+        val layer: Layer = getLayerAt(layerIndex)
+        val chunkX = getChunkX(x.toFloat())
+        val chunkY = getChunkY(y.toFloat())
         val chunk: Chunk? = layer.getChunkAt(chunkX, chunkY)
-        val blockX = x % Chunk.CHUNK_SIDE
-        val blockY = y % Chunk.CHUNK_SIDE
+        val blockX = getBlockX(x)
+        val blockY = getBlockY(y)
         return chunk?.getBlockAt(blockX, blockY)
     }
+
+    fun setBlockAt(layerIndex: Int, x: Int, y: Int, blockType: BlockType) {
+        if (layerIndex < 0 || layerIndex >= layers.size) return
+        val layer: Layer = getLayerAt(layerIndex)
+        val chunkX = getChunkX(x.toFloat())
+        val chunkY: Int = getChunkY(y.toFloat())
+        val chunk: Chunk? = layer.getChunkAt(chunkX, chunkY)
+        val blockX = getBlockX(x)
+        val blockY = getBlockY(y)
+        chunk?.setBlockAt(blockX, blockY, blockType)
+    }
+
+    fun getLayerAt(layerIndex: Int): Layer = layers[layerIndex]
+    fun getChunkX(x: Float): Int = floor(x / Chunk.CHUNK_SIDE).toInt()
+    fun getChunkY(y: Float): Int = floor(y / Chunk.CHUNK_SIDE).toInt()
+    fun getBlockX(x: Int): Int = x % Chunk.CHUNK_SIDE
+    fun getBlockY(y: Int): Int = y % Chunk.CHUNK_SIDE
 }
