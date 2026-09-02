@@ -30,7 +30,6 @@ data class BlockType(val identifier: Identifier) {
         val GRASS_DIRT = register("grass_dirt")
         val GRASS = register("grass")
         val GRASS_TALL = register("grass_tall")
-        val WITHERED_PLANKS = register("withered_planks")
         val STONE = register("stone")
 
         fun register(id: String): BlockType {

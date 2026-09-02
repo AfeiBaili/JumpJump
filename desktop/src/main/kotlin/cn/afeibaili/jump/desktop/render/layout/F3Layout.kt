@@ -38,18 +38,18 @@ class F3Layout {
 
     fun load() {
         loadKey()
-        keySet.onKey()
+        keySet.on()
         layout()
     }
 
     private fun loadKey() {
         keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
-            click {
+            released {
                 window.vsync = !window.vsync
             }
         }
         keySet.bind(Key("open_f3", GLFW.GLFW_KEY_F3)) {
-            click {
+            released {
                 f3.showable = !f3.showable
                 Application.rendererSystem.uiRenderer.update()
             }
@@ -83,6 +83,10 @@ class F3Layout {
                     "f3.player.position", "init player position", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
+                text(
+                    "f3.current.layer", "init current layer index", font, updater = textUpdater, scale = scale,
+                    backgroundColor = textBackgroundColor,
+                )
             }
         }
     }
@@ -96,5 +100,6 @@ class F3Layout {
         )
         textUpdater.update("f3.cursor.block", "block: ${worldEditor.currentCursorBlock}")
         textUpdater.update("f3.player.position", "player: [x:${Player.self.x}, y:${Player.self.y}]")
+        textUpdater.update("f3.current.layer", "layer index: ${worldEditor.currentLayerIndex}")
     }
 }

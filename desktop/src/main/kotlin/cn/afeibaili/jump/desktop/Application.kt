@@ -44,7 +44,7 @@ class Application {
         val logicThread = LogicThread()
         val camera get() = rendererSystem.worldRenderer.camera
         val player get() = Player.self
-        val worldEditor = WorldEditor()
+        lateinit var worldEditor: WorldEditor
         lateinit var world: WorldModel
 
         fun setup() {
@@ -54,7 +54,8 @@ class Application {
             rendererSystem.init()
             logger.info("initialize player")
             player.init()
-
+            logger.info("initialize world editor")
+            worldEditor = WorldEditor(world.world)
             logger.info("application is initialized")
         }
 

@@ -77,6 +77,6 @@ class Player(
 
     fun init() {
         loadKeyBind()
-        keySet.onKey()
+        keySet.on()
     }
 }

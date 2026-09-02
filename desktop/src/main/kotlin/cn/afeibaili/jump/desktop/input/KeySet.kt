@@ -71,11 +71,11 @@ data class KeySet(val identifier: Identifier) : TickHandler {
         set.add(KeyBind(key, Application.window) to callback)
     }
 
-    fun onKey() {
+    fun on() {
         keyable = true
     }
 
-    fun offKey() {
+    fun off() {
         keyable = false
     }
 }
