@@ -66,7 +66,14 @@ class WorldEditor(val world: World) : TickHandler {
 
     fun loadInput() {
         mouseButtonSet.bind(MouseButton("place.block", GLFW.GLFW_MOUSE_BUTTON_2)) {
-            released { placeBlockByButton() }
+            if (buttonPressed()) {
+                placeBlockByButton()
+            }
+        }
+        mouseButtonSet.bind(MouseButton("break.block", GLFW.GLFW_MOUSE_BUTTON_1)) {
+            if (buttonPressed()) {
+                breakBlockByButton()
+            }
         }
 
         keySet.bind(Key("switch.last.layer", GLFW.GLFW_KEY_MINUS)) {
@@ -83,6 +90,10 @@ class WorldEditor(val world: World) : TickHandler {
 
     fun placeBlockByButton() {
         world.setBlockAt(currentLayerIndex, getCurrentBlockX(), getCurrentBlockY(), BlockType.STONE)
+    }
+
+    fun breakBlockByButton() {
+        world.setBlockAt(currentLayerIndex, getCurrentBlockX(), getCurrentBlockY(), BlockType.AIR)
     }
 
     fun getCurrentBlockX() = floor(currentPlayerX + (currentCursorX.toFloat() / width) * zoom * aspect).toInt()

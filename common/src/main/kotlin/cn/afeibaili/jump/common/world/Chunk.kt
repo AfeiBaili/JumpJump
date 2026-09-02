@@ -36,7 +36,10 @@ class Chunk(
 
     fun setBlockAt(x: Int, y: Int, blockType: BlockType) {
         if (x < 0 || x >= CHUNK_SIDE || y < 0 || y >= CHUNK_SIDE) return
-        blocks[y * CHUNK_SIDE + x] = Block((CHUNK_SIDE * chunkX) + x, (CHUNK_SIDE * chunkY) + y, blockType)
+        val blockIndex: Int = y * CHUNK_SIDE + x
+        val block: Block = blocks[blockIndex]
+        if (block.type == blockType) return
+        blocks[blockIndex] = Block((CHUNK_SIDE * chunkX) + x, (CHUNK_SIDE * chunkY) + y, blockType)
         changed = true
     }
 
