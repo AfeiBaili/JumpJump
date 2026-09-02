@@ -44,12 +44,12 @@ class F3Layout {
 
     private fun loadKey() {
         keySet.bind(Key("vsync", GLFW.GLFW_KEY_F1)) {
-            keyClick {
+            click {
                 window.vsync = !window.vsync
             }
         }
         keySet.bind(Key("open_f3", GLFW.GLFW_KEY_F3)) {
-            keyClick {
+            click {
                 f3.showable = !f3.showable
                 Application.rendererSystem.uiRenderer.update()
             }

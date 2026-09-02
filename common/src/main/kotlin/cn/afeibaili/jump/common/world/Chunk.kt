@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.block.Block
+import cn.afeibaili.jump.common.block.BlockType
 import cn.afeibaili.jump.common.block.BlockTypes
 import java.util.*
 
@@ -42,11 +43,15 @@ class Chunk(
 
     companion object {
         fun createEmpty(chunkX: Int, chunkY: Int): Chunk {
+            return createByBlock(chunkX, chunkY, BlockTypes.AIR)
+        }
+
+        fun createByBlock(chunkX: Int, chunkY: Int, blockType: BlockType): Chunk {
             val blocks = Array(CHUNK_SIDE * CHUNK_SIDE) { index ->
                 Block(
                     (CHUNK_SIDE * chunkX) + index % CHUNK_SIDE,
                     (CHUNK_SIDE * chunkY) + index / CHUNK_SIDE,
-                    BlockTypes.ERROR
+                    blockType
                 )
             }
             val chunk = Chunk(chunkX, chunkY, blocks)

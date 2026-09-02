@@ -1,9 +1,13 @@
 package cn.afeibaili.jump.desktop.world
 
+import cn.afeibaili.gl.input.MouseButton
 import cn.afeibaili.jump.common.block.Block
+import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.entity.Player
+import cn.afeibaili.jump.desktop.input.MouseButtonSet
 import cn.afeibaili.jump.desktop.logic.TickHandler
+import org.lwjgl.glfw.GLFW
 import kotlin.math.floor
 
 
@@ -27,20 +31,32 @@ class WorldEditor : TickHandler {
     val zoom get() = Application.camera.zoom
     var blockPositionX = 0
     var blockPositionY = 0
+    val mouseButtonSet = MouseButtonSet("mouse" identifier "world.editor")
 
     init {
         TickHandler.addHandler(this)
+        loadMouseButtonBinds()
+        mouseButtonSet.on()
+    }
+
+    fun loadMouseButtonBinds() {
+        mouseButtonSet.bind(MouseButton("released", GLFW.GLFW_MOUSE_BUTTON_1)) {
+            released {
+
+            }
+        }
     }
 
     override fun tick() {
-        val worldX = currentPlayerX + (currentCursorX.toFloat() / width) * zoom * aspect
-        val worldY = currentPlayerY + ((height - currentCursorY.toFloat()) / height) * zoom
-
-        val blockX = floor(worldX).toInt()
-        val blockY = floor(worldY).toInt()
-
-        blockPositionX = blockX
-        blockPositionY = blockY
-        currentCursorBlock = world.getBlockAt(0, blockX, blockY)
+        blockPositionX = getCurrentBlockX()
+        blockPositionY = getCurrentBlockY()
+        currentCursorBlock = world.getBlockAt(0, blockPositionX, blockPositionY)
     }
+
+    fun placeBlockByButton() {
+        //todo
+    }
+
+    fun getCurrentBlockX() = floor(currentPlayerX + (currentCursorX.toFloat() / width) * zoom * aspect).toInt()
+    fun getCurrentBlockY() = floor(currentPlayerY + ((height - currentCursorY.toFloat()) / height) * zoom).toInt()
 }

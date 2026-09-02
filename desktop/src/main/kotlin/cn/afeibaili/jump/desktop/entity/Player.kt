@@ -53,23 +53,23 @@ class Player(
 
     fun loadKeyBind() {
         keySet.bind(Key("move_left", GLFW.GLFW_KEY_A)) {
-            if (this.keyPress()) {
+            if (this.keyPressed()) {
                 xv -= speed * LogicThread.self.step
             }
         }
         keySet.bind(Key("move_right", GLFW.GLFW_KEY_D)) {
-            if (this.keyPress()) {
+            if (this.keyPressed()) {
                 xv += speed * LogicThread.self.step
             }
         }
         keySet.bind(Key("move_up", GLFW.GLFW_KEY_W)) {
-            if (this.keyPress()) {
+            if (this.keyPressed()) {
                 yv += speed * LogicThread.self.step
 
             }
         }
         keySet.bind(Key("move_down", GLFW.GLFW_KEY_S)) {
-            if (this.keyPress()) {
+            if (this.keyPressed()) {
                 yv -= speed * LogicThread.self.step
             }
         }

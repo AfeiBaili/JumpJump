@@ -38,7 +38,9 @@ class LogicThread {
     }, "LogicThread")
 
     /**
-     * 刻更新方法，已用**TickHandler**类进行封装
+     * ## 刻更新方法，已用**TickHandler**类进行封装
+     *
+     * 每秒60次
      *
      * @see TickHandler
      */
